@@ -511,16 +511,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   71
+#define YYLAST   74
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  62
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  17
+#define YYNNTS  19
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  33
+#define YYNRULES  37
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  76
+#define YYNSTATES  85
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -572,35 +572,37 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,    12,    16,    18,    22,    24,    28,    30,
-      34,    37,    41,    43,    45,    49,    53,    59,    66,    73,
-      75,    80,    84,    86,    89,    90,    94,    98,   100,   104,
-     106,   110,   112,   114
+      34,    36,    40,    43,    49,    54,    58,    60,    62,    66,
+      70,    76,    83,    90,    92,    97,   101,   103,   106,   107,
+     111,   115,   117,   121,   123,   127,   129,   131
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
       63,     0,    -1,    51,     3,    28,     3,    29,    26,    66,
-      18,    -1,     3,    25,    64,    -1,     3,    -1,    76,    25,
-      65,    -1,    76,    -1,    59,    67,    71,    -1,    71,    -1,
-      68,    26,    67,    -1,    68,    26,    -1,    64,    27,    69,
-      -1,    70,    -1,     3,    -1,    34,    72,    73,    -1,    34,
-      72,    73,    -1,    45,    76,    55,    72,    74,    -1,    42,
-      75,    56,    76,    37,    72,    -1,    42,    75,    38,    76,
-      37,    72,    -1,    75,    -1,     3,    28,    65,    29,    -1,
-      26,    72,    73,    -1,    40,    -1,    39,    72,    -1,    -1,
-       3,    10,    76,    -1,    76,     6,    77,    -1,    77,    -1,
-      77,     8,    78,    -1,    78,    -1,    28,    76,    29,    -1,
-       3,    -1,     5,    -1,     4,    -1
+      18,    -1,     3,    25,    64,    -1,     3,    -1,    78,    25,
+      65,    -1,    78,    -1,    36,    69,    67,    -1,    67,    -1,
+      59,    68,    73,    -1,    73,    -1,    70,    26,    68,    -1,
+      70,    26,    -1,     3,    10,     5,    26,    69,    -1,     3,
+      10,     5,    26,    -1,    64,    27,    71,    -1,    72,    -1,
+       3,    -1,    34,    74,    75,    -1,    34,    74,    75,    -1,
+      45,    78,    55,    74,    76,    -1,    42,    77,    56,    78,
+      37,    74,    -1,    42,    77,    38,    78,    37,    74,    -1,
+      77,    -1,     3,    28,    65,    29,    -1,    26,    74,    75,
+      -1,    40,    -1,    39,    74,    -1,    -1,     3,    10,    78,
+      -1,    78,     6,    79,    -1,    79,    -1,    79,     8,    80,
+      -1,    80,    -1,    28,    78,    29,    -1,     3,    -1,     5,
+      -1,     4,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    91,    91,    93,    94,    96,    97,    99,   100,   102,
-     103,   105,   107,   109,   112,   115,   116,   117,   118,   119,
-     120,   124,   125,   127,   128,   130,   132,   133,   135,   136,
-     138,   139,   140,   141
+       0,    91,    91,    93,    94,    96,    97,    99,   100,   103,
+     104,   106,   107,   109,   110,   113,   115,   117,   120,   123,
+     124,   125,   126,   127,   128,   132,   133,   135,   136,   138,
+     140,   141,   143,   144,   146,   147,   148,   149
 };
 #endif
 
@@ -617,9 +619,9 @@ static const char *const yytname[] =
   "END", "FILEFILE", "FOR", "FUNCTION", "GOTO", "IF", "LABEL", "NIL", "OF",
   "PACKED", "PROCEDURE", "PROGRAM", "RECORD", "REPEAT", "SET", "THEN",
   "TO", "TYPE", "UNTIL", "VAR", "WHILE", "WITH", "$accept", "program",
-  "idlist", "arglist", "vblock", "varspecs", "vargroup", "type",
-  "simpletype", "block", "statement", "endpart", "endif", "assignment",
-  "expr", "term", "factor", 0
+  "idlist", "arglist", "cblock", "vblock", "varspecs", "congroup",
+  "vargroup", "type", "simpletype", "block", "statement", "endpart",
+  "endif", "assignment", "expr", "term", "factor", 0
 };
 #endif
 
@@ -642,18 +644,18 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    62,    63,    64,    64,    65,    65,    66,    66,    67,
-      67,    68,    69,    70,    71,    72,    72,    72,    72,    72,
-      72,    73,    73,    74,    74,    75,    76,    76,    77,    77,
-      78,    78,    78,    78
+      67,    68,    68,    69,    69,    70,    71,    72,    73,    74,
+      74,    74,    74,    74,    74,    75,    75,    76,    76,    77,
+      78,    78,    79,    79,    80,    80,    80,    80
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     8,     3,     1,     3,     1,     3,     1,     3,
-       2,     3,     1,     1,     3,     3,     5,     6,     6,     1,
-       4,     3,     1,     2,     0,     3,     3,     1,     3,     1,
-       3,     1,     1,     1
+       1,     3,     2,     5,     4,     3,     1,     1,     3,     3,
+       5,     6,     6,     1,     4,     3,     1,     2,     0,     3,
+       3,     1,     3,     1,     3,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -662,42 +664,44 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     1,     0,     0,     0,     0,     0,
-       0,     0,     8,     0,     0,     0,     0,     0,    19,     4,
-       0,     0,     0,     2,     0,     0,     0,     0,     0,    31,
-      33,    32,     0,     0,    27,    29,     0,    22,    14,     0,
-       0,     7,    10,    25,     0,     6,    15,     0,     0,     0,
-       0,     0,     0,     0,     3,    13,    11,    12,     9,    20,
-       0,     0,     0,    30,    26,    24,    28,    21,     5,     0,
-       0,     0,    16,    18,    17,    23
+       0,     0,     0,     8,    10,     0,     0,     0,     0,     0,
+      23,     0,     0,     4,     0,     0,     0,     2,     0,     0,
+       0,     0,     0,    35,    37,    36,     0,     0,    31,    33,
+       0,    26,    18,     0,     7,     0,     0,     9,    12,    29,
+       0,     6,    19,     0,     0,     0,     0,     0,     0,     0,
+       0,     3,    17,    15,    16,    11,    24,     0,     0,     0,
+      34,    30,    28,    32,    25,    14,     5,     0,     0,     0,
+      20,    13,    22,    21,    27
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,    20,    44,    11,    21,    22,    56,    57,    12,
-      17,    38,    72,    18,    45,    34,    35
+      -1,     2,    24,    50,    12,    13,    25,    22,    26,    63,
+      64,    14,    19,    42,    80,    20,    51,    38,    39
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -40
+#define YYPACT_NINF -36
 static const yytype_int8 yypact[] =
 {
-     -39,    10,    20,    -7,   -40,    22,    -6,    16,   -29,    -1,
-      23,     9,   -40,     4,    -1,    40,    12,   -16,   -40,    21,
-      18,    13,    25,   -40,    12,    12,   -16,    38,   -20,   -40,
-     -40,   -40,    12,    -5,    41,   -40,    -1,   -40,   -40,    23,
-      49,   -40,    23,    47,    29,     3,   -40,    12,    12,     0,
-      12,    -1,    12,   -16,   -40,   -40,   -40,   -40,   -40,   -40,
-      12,     1,     2,   -40,    41,    15,   -40,   -40,   -40,    -1,
-      -1,    -1,   -40,   -40,   -40,   -40
+     -35,    15,    19,    -7,   -36,    20,    -2,     3,   -21,     0,
+      22,    43,    29,   -36,   -36,    16,     0,    45,     4,    -9,
+     -36,    39,   -22,    26,    25,    21,    27,   -36,     4,     4,
+      -9,    44,   -28,   -36,   -36,   -36,     4,    -5,    48,   -36,
+       0,   -36,   -36,    52,   -36,    43,    55,   -36,    43,    53,
+      31,     5,   -36,     4,     4,    14,     4,     0,     4,    -9,
+      38,   -36,   -36,   -36,   -36,   -36,   -36,     4,    -4,    -1,
+     -36,    48,    28,   -36,   -36,    22,   -36,     0,     0,     0,
+     -36,   -36,   -36,   -36,   -36
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -40,   -40,    24,     5,   -40,    17,   -40,   -40,   -40,    39,
-     -14,   -22,   -40,    46,   -13,    14,    19
+     -36,   -36,    23,     2,   -36,    49,    17,    -3,   -36,   -36,
+     -36,    41,   -16,   -24,   -36,    56,   -14,    18,    12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -707,26 +711,26 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      26,    50,    13,    33,    46,     9,    50,    50,    50,    50,
-      36,    43,     1,     3,    24,    29,    30,    31,    47,    49,
-       4,     5,    53,     7,    37,     6,    19,    23,    60,    63,
-      10,    67,    25,    14,    61,    62,    48,    65,    69,    70,
-      32,    15,     8,    27,    16,    40,    39,     9,    24,    52,
-      51,    42,    55,    50,    71,    73,    74,    75,    59,    58,
-      41,    28,     0,    54,    64,    68,     0,     0,     0,     0,
-       0,    66
+      30,    56,    56,    15,    37,    56,    52,    33,    34,    35,
+      53,    56,     9,     9,    49,    10,     1,    40,     3,     4,
+      56,     5,    55,     6,    59,    21,    28,     7,    54,     8,
+      67,    41,    36,    77,    16,    74,    78,    11,    11,    68,
+      69,    72,    17,    70,    29,    18,    23,    27,    31,    43,
+      57,    45,    46,    48,    28,     9,    58,    60,    62,    56,
+      66,    82,    83,    84,    75,    65,    47,    79,    61,    76,
+      73,    44,    81,    32,    71
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-      14,     6,     3,    16,    26,    34,     6,     6,     6,     6,
-      26,    24,    51,     3,    10,     3,     4,     5,    38,    32,
-       0,    28,    36,    29,    40,     3,     3,    18,    25,    29,
-      59,    53,    28,    34,    47,    48,    56,    51,    37,    37,
-      28,    42,    26,     3,    45,    27,    25,    34,    10,     8,
-      55,    26,     3,     6,    39,    69,    70,    71,    29,    42,
-      21,    15,    -1,    39,    50,    60,    -1,    -1,    -1,    -1,
-      -1,    52
+      16,     6,     6,     3,    18,     6,    30,     3,     4,     5,
+      38,     6,    34,    34,    28,    36,    51,    26,     3,     0,
+       6,    28,    36,     3,    40,     3,    10,    29,    56,    26,
+      25,    40,    28,    37,    34,    59,    37,    59,    59,    53,
+      54,    57,    42,    29,    28,    45,     3,    18,     3,    10,
+      55,    25,    27,    26,    10,    34,     8,     5,     3,     6,
+      29,    77,    78,    79,    26,    48,    25,    39,    45,    67,
+      58,    22,    75,    17,    56
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -734,13 +738,14 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,    51,    63,     3,     0,    28,     3,    29,    26,    34,
-      59,    66,    71,     3,    34,    42,    45,    72,    75,     3,
-      64,    67,    68,    18,    10,    28,    72,     3,    75,     3,
-       4,     5,    28,    76,    77,    78,    26,    40,    73,    25,
-      27,    71,    26,    76,    65,    76,    73,    38,    56,    76,
-       6,    55,     8,    72,    64,     3,    69,    70,    67,    29,
-      25,    76,    76,    29,    77,    72,    78,    73,    65,    37,
-      37,    39,    74,    72,    72,    72
+      36,    59,    66,    67,    73,     3,    34,    42,    45,    74,
+      77,     3,    69,     3,    64,    68,    70,    18,    10,    28,
+      74,     3,    77,     3,     4,     5,    28,    78,    79,    80,
+      26,    40,    75,    10,    67,    25,    27,    73,    26,    78,
+      65,    78,    75,    38,    56,    78,     6,    55,     8,    74,
+       5,    64,     3,    71,    72,    68,    29,    25,    78,    78,
+      29,    79,    74,    80,    75,    26,    65,    37,    37,    39,
+      76,    69,    74,    74,    74
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1581,138 +1586,163 @@ yyreduce:
 
   case 7:
 #line 99 "parse.y"
-    { printf("executed vblock action \n"); (yyval) = (yyvsp[(3) - (3)]); }
+    { printf("called cblock with congroup option \n");}
+    break;
+
+  case 8:
+#line 100 "parse.y"
+    { printf("called cblock with no option \n");}
     break;
 
   case 9:
-#line 102 "parse.y"
-    { printf("executed varspecs action \n");}
+#line 103 "parse.y"
+    { printf("executed vblock action with varspecs \n"); (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 10:
-#line 103 "parse.y"
-    { printf("exectued varspecs action vargroup SEMICOLON option \n");}
+#line 104 "parse.y"
+    { printf("executed vblock action no varspecs \n"); (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 11:
-#line 105 "parse.y"
-    {  printf("executed vargroup action \n"); instvars((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
+#line 106 "parse.y"
+    { printf("executed varspecs action \n");}
     break;
 
   case 12:
 #line 107 "parse.y"
-    { printf("executed type action \n");}
+    { printf("exectued varspecs action vargroup SEMICOLON option \n");}
     break;
 
   case 13:
 #line 109 "parse.y"
-    { printf("the simple type action ran \n" ); (yyval) = findtype((yyvsp[(1) - (1)])); }
+    { printf("executed congroup action with more congroups \n"); }
     break;
 
   case 14:
-#line 112 "parse.y"
-    { printf("BLOCK action was called"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
+#line 110 "parse.y"
+    { printf("executed congroup action one constant assignment \n"); }
     break;
 
   case 15:
-#line 115 "parse.y"
-    { printf("you called STATEMENT action completing BEGINBEGIN... \n"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
+#line 113 "parse.y"
+    {  printf("executed vargroup action \n"); instvars((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 16:
-#line 116 "parse.y"
-    { printf("you called STATEMENT action completing IF..THEN.. \n"); (yyval) = makeif((yyvsp[(1) - (5)]), (yyvsp[(2) - (5)]), (yyvsp[(4) - (5)]), (yyvsp[(5) - (5)])); }
+#line 115 "parse.y"
+    { printf("executed type action \n");}
     break;
 
   case 17:
 #line 117 "parse.y"
-    {printf("You called STATEMENT action for loop \n");(yyval) = makefor(1,(yyvsp[(1) - (6)]),(yyvsp[(2) - (6)]),(yyvsp[(3) - (6)]),(yyvsp[(4) - (6)]),(yyvsp[(5) - (6)]),(yyvsp[(6) - (6)])) ;}
+    { printf("the simple type action ran \n" ); (yyval) = findtype((yyvsp[(1) - (1)])); }
     break;
 
   case 18:
-#line 118 "parse.y"
-    {printf("You called STATEMENT action for downto loop"); (yyval) = makefor(-1,(yyvsp[(1) - (6)]),(yyvsp[(2) - (6)]),(yyvsp[(3) - (6)]),(yyvsp[(4) - (6)]),(yyvsp[(5) - (6)]),(yyvsp[(6) - (6)]));}
+#line 120 "parse.y"
+    { printf("BLOCK action was called"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
     break;
 
   case 19:
-#line 119 "parse.y"
-    { printf("you called STATEMENT action completing assignment \n");}
+#line 123 "parse.y"
+    { printf("you called STATEMENT action completing BEGINBEGIN... \n"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
     break;
 
   case 20:
-#line 120 "parse.y"
-    {printf("you called STATEMENT action completing funcall"); (yyval) = makefuncall((yyvsp[(2) - (4)]), (yyvsp[(1) - (4)]), 
-             (yyvsp[(3) - (4)]));}
+#line 124 "parse.y"
+    { printf("you called STATEMENT action completing IF..THEN.. \n"); (yyval) = makeif((yyvsp[(1) - (5)]), (yyvsp[(2) - (5)]), (yyvsp[(4) - (5)]), (yyvsp[(5) - (5)])); }
     break;
 
   case 21:
-#line 124 "parse.y"
-    {printf("You called ENDPART action \n"); (yyval) = cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)])); }
+#line 125 "parse.y"
+    {printf("You called STATEMENT action for loop \n");(yyval) = makefor(1,(yyvsp[(1) - (6)]),(yyvsp[(2) - (6)]),(yyvsp[(3) - (6)]),(yyvsp[(4) - (6)]),(yyvsp[(5) - (6)]),(yyvsp[(6) - (6)])) ;}
     break;
 
   case 22:
-#line 125 "parse.y"
-    { printf("You called ENDPART action \n");(yyval) = NULL; }
+#line 126 "parse.y"
+    {printf("You called STATEMENT action for downto loop"); (yyval) = makefor(-1,(yyvsp[(1) - (6)]),(yyvsp[(2) - (6)]),(yyvsp[(3) - (6)]),(yyvsp[(4) - (6)]),(yyvsp[(5) - (6)]),(yyvsp[(6) - (6)]));}
     break;
 
   case 23:
 #line 127 "parse.y"
-    { printf("You called ENDIF action \n"); (yyval) = (yyvsp[(2) - (2)]); }
+    { printf("you called STATEMENT action completing assignment \n");}
     break;
 
   case 24:
 #line 128 "parse.y"
-    { printf("You called ENDIF action \n"); (yyval) = NULL; }
+    {printf("you called STATEMENT action completing funcall"); (yyval) = makefuncall((yyvsp[(2) - (4)]), (yyvsp[(1) - (4)]), 
+             (yyvsp[(3) - (4)]));}
     break;
 
   case 25:
-#line 130 "parse.y"
-    { printf("you called ASSIGNMENT action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
+#line 132 "parse.y"
+    {printf("You called ENDPART action \n"); (yyval) = cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 26:
-#line 132 "parse.y"
-    { printf("you called EXPR action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
+#line 133 "parse.y"
+    { printf("You called ENDPART action \n");(yyval) = NULL; }
     break;
 
   case 27:
-#line 133 "parse.y"
-    { printf("you called EXPR action term option\n");}
+#line 135 "parse.y"
+    { printf("You called ENDIF action \n"); (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 28:
-#line 135 "parse.y"
-    { printf("you called TERM action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
+#line 136 "parse.y"
+    { printf("You called ENDIF action \n"); (yyval) = NULL; }
     break;
 
   case 29:
-#line 136 "parse.y"
-    { printf("you called TERM action factor option \n");}
+#line 138 "parse.y"
+    { printf("you called ASSIGNMENT action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 30:
-#line 138 "parse.y"
-    { (yyval) = (yyvsp[(2) - (3)]); }
+#line 140 "parse.y"
+    { printf("you called EXPR action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 31:
-#line 139 "parse.y"
-    { printf("You called factor action identifier option \n");}
+#line 141 "parse.y"
+    { printf("you called EXPR action term option\n");}
     break;
 
   case 32:
-#line 140 "parse.y"
-    { printf("You called factor action number option \n");}
+#line 143 "parse.y"
+    { printf("you called TERM action \n"); (yyval) = binop((yyvsp[(2) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 33:
-#line 141 "parse.y"
+#line 144 "parse.y"
+    { printf("you called TERM action factor option \n");}
+    break;
+
+  case 34:
+#line 146 "parse.y"
+    { (yyval) = (yyvsp[(2) - (3)]); }
+    break;
+
+  case 35:
+#line 147 "parse.y"
+    { printf("You called factor action identifier option \n");}
+    break;
+
+  case 36:
+#line 148 "parse.y"
+    { printf("You called factor action number option \n");}
+    break;
+
+  case 37:
+#line 149 "parse.y"
     { printf("You called factor action string option \n");}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1716 "y.tab.c"
+#line 1746 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1926,7 +1956,7 @@ yyreturn:
 }
 
 
-#line 144 "parse.y"
+#line 152 "parse.y"
 
 
 /* You should add your own debugging flags below, and add debugging
