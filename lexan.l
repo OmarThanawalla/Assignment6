@@ -65,10 +65,11 @@ fnumber  {digit}+(\.{digit}+)?(E[+\-]?{digit}+)?(e[+\-]?{digit}+)?
 %%
 
 {ws}      { /* no action and no return */ }
-"(*".+"*)" { /* this is a comment */ }
+"(*".*?"*)" { /* this is a comment */ }
 
 
-"{".+"}"  { /* this is a comment */ }
+"{"[^}]*?"}"  { /* this is a comment */ }
+
 
 array     {return(maketoken(RESERVED, ARRAY));}
 case      {return(maketoken(RESERVED, CASE));}

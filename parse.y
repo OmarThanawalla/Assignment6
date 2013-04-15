@@ -88,7 +88,7 @@ TOKEN parseresult;
 
 %%
 
-  program    :   PROGRAM IDENTIFIER LPAREN IDENTIFIER RPAREN SEMICOLON cblock DOT { printf("exectued program action \n"); parseresult = $7;}
+  program    : PROGRAM IDENTIFIER LPAREN IDENTIFIER RPAREN SEMICOLON cblock DOT { printf("exectued program action \n"); parseresult = $7;}
              ;
   idlist     : IDENTIFIER COMMA idlist			{ printf("executed idlist action1 \n"); $$ = cons($1, $3); }
 	 		 | IDENTIFIER 						{  printf("executed idlist action2 \n"); $$ = cons($1, NULL); }
@@ -106,8 +106,8 @@ TOKEN parseresult;
   varspecs   : vargroup SEMICOLON varspecs		{ printf("executed varspecs action \n");}
              | vargroup SEMICOLON               { printf("exectued varspecs action vargroup SEMICOLON option \n");}
              ;
-  congroup   : IDENTIFIER ASSIGN NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); }
-             | IDENTIFIER ASSIGN NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); }
+  congroup   : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); }
+             | IDENTIFIER EQ NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); }
              ;
 
   vargroup   : idlist COLON type				{  printf("executed vargroup action \n"); instvars($1, $3); }

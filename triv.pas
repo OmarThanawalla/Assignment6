@@ -1,5 +1,6 @@
+{ trivial test program        -- file triv.pas }
 program graph1(output);
-var j:integer;
+var i:integer;
 begin
-   j := 3
+i := 3
 end.
