@@ -106,7 +106,7 @@ TOKEN parseresult;
   varspecs   : vargroup SEMICOLON varspecs		{ printf("executed varspecs action \n");}
              | vargroup SEMICOLON               { printf("exectued varspecs action vargroup SEMICOLON option \n");}
              ;
-  congroup   : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); }
+  congroup   : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); //got to put the makecon function here? }
              | IDENTIFIER EQ NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); }
              ;
 
@@ -210,6 +210,8 @@ void instvars(TOKEN idlist, TOKEN typetok)
 		};
         printf("You FINISHED calling instvars \n");
 }
+
+      
 
 TOKEN findtype(TOKEN tok)
 {
