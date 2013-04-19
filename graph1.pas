@@ -6,10 +6,12 @@ const d = 0.0625;
 var x,y : real;  i,n : integer;
 begin
    for i := 0 to lim do
-      begin x := d*i; y := exp(-x)*sin(c*x);
+    begin
+      x := d*i;
+      y := exp(-x)*sin(c*x);
       n := round(s*y) + h;
       repeat write(' ');  n := n-1
       until n=0;
       writeln('*')
-   end
+    end
 end.

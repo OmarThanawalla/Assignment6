@@ -1,11 +1,17 @@
 program graph1(output);
 const d = 0.0625;
-    s = 32;
-    h = 34;
-    c = 6.28318;   bim = 32;
-var i,lim : integer;
+      s = 32;
+      h = 34;
+      c = 6.28318;   lim = 32;
+var x,y : real;  i,n : integer;
 begin
-    lim := 7;
-    for i := 0 to lim do
+  for i := 0 to lim do
+    begin
+        x := d*i;
+        y := exp(-x)*sin(c*x);
+        n := round(s*y) + h;
+        repeat write(' ');  n := n-1
+        until n=0;
         writeln('*')
+    end
 end.

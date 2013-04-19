@@ -96,8 +96,8 @@ TOKEN parseresult;
   arglist    : expr COMMA arglist         { printf("called arglist with multiple arguments \n"); $$ = cons($1, $3); }
              | expr                       { printf("called arglist with no arguments \n"); $$ = cons($1, NULL);}
              ;
-  cblock     : CONST congroup vblock            { printf("called cblock with congroup option \n");}       
-             | vblock                           { printf("called cblock with no option \n");} 
+  cblock     : CONST congroup vblock            { printf("called cblock with congroup option \n"); $$ = $3;}       
+             | vblock                           { printf("called cblock with no option \n"); $$ = $1;} 
              ;
 
   vblock 	 :   VAR varspecs block 			{ printf("executed vblock action with varspecs \n"); $$ = $3; }
@@ -106,8 +106,8 @@ TOKEN parseresult;
   varspecs   : vargroup SEMICOLON varspecs		{ printf("executed varspecs action \n");}
              | vargroup SEMICOLON               { printf("exectued varspecs action vargroup SEMICOLON option \n");}
              ;
-  congroup   : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); //got to put the makecon function here? }
-             | IDENTIFIER EQ NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); }
+congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); instconstant($1,$3); }
+             | IDENTIFIER EQ NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); instconstant($1,$3);}
              ;
 
   vargroup   : idlist COLON type				{  printf("executed vargroup action \n"); instvars($1, $3); }
@@ -125,9 +125,9 @@ TOKEN parseresult;
              |  FOR assignment TO expr DO statement {printf("You called STATEMENT action for loop \n");$$ = makefor(1,$1,$2,$3,$4,$5,$6) ;}
              |  FOR assignment DOWNTO expr DO statement {printf("You called STATEMENT action for downto loop"); $$ = makefor(-1,$1,$2,$3,$4,$5,$6);}
              |  assignment                     { printf("you called STATEMENT action completing assignment \n");}
-             |  IDENTIFIER LPAREN arglist RPAREN {printf("you called STATEMENT action completing funcall"); $$ = makefuncall($2, $1, 
+             |  IDENTIFIER LPAREN arglist RPAREN {printf("you called STATEMENT action completing funcall \n"); $$ = makefuncall($2, $1, 
              $3);}
-             
+             |  REPEAT statement SEMICOLON UNTIL expression {printf("you called STATEMENT action completing REPEAT call");}
              ;
   endpart    :  SEMICOLON statement endpart    {printf("You called ENDPART action \n"); $$ = cons($2, $3); }
              |  END                            { printf("You called ENDPART action \n");$$ = NULL; }
@@ -137,13 +137,18 @@ TOKEN parseresult;
              ;
   assignment :  IDENTIFIER ASSIGN expr         { printf("you called ASSIGNMENT action \n"); $$ = binop($2, $1, $3); }
              ;
-  expr       :  expr PLUS term                 { printf("you called EXPR action \n"); $$ = binop($2, $1, $3); }
-             |  term                           { printf("you called EXPR action term option\n");}
+  expr       :  expr PLUS smplExpr                 { printf("you called EXPR action addition \n"); $$ = binop($2, $1, $3); }
+             |  expr TIMES smplExpr                { printf("you called EXPR action multiplication \n"); $$ = binop($2, $1, $3); }
+             |  smplExpr                           { printf("you called EXPR action term option\n");}
+             ;
+  smplExpr   :  MINUS term                         {printf("you called smplExpr - MINUS term \n"); $$ = onenop($1,$2);}
+             |  term                               {printf("you called smplexpr - term \n");}
              ;
   term       :  term TIMES factor              { printf("you called TERM action \n"); $$ = binop($2, $1, $3); }
              |  factor                          { printf("you called TERM action factor option \n");}
              ;
   factor     :  LPAREN expr RPAREN             { $$ = $2; }
+             |  IDENTIFIER LPAREN arglist RPAREN {printf("you called factor action completing funcall \n"); $$ = makefuncall($2, $1, $3);}
              |  IDENTIFIER                      { printf("You called factor action identifier option \n");}
              |  NUMBER                          { printf("You called factor action number option \n");}
              |  STRING                          { printf("You called factor action string option \n");}
@@ -190,13 +195,17 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
 void instvars(TOKEN idlist, TOKEN typetok)
 { 
         printf("You called instvars \n");
+    
 		SYMBOL sym, typesym; int align;
         printf("You called instvars2 \n");
+    
 		typesym = typetok->symtype;
         printf("You called instvars3 \n");
+    
 		align = (typesym->size > WORDSIZE) ?
 		ALIGNSIZE : typesym->size ;
         printf("You called instvars4 \n");
+    
 		while ( idlist != NULL ) /* for each id */
 		{ 
 			sym = insertsym(idlist->stringval);
@@ -206,12 +215,39 @@ void instvars(TOKEN idlist, TOKEN typetok)
 			blockoffs[blocknumber] = sym->offset + sym->size;
 			sym->datatype = typesym;
 			sym->basicdt = typesym->basicdt;
+            
 			idlist = idlist->link;
 		};
         printf("You FINISHED calling instvars \n");
 }
 
-      
+void instconstant(TOKEN id, TOKEN constant)
+{
+    printf("You called instconstant \n");
+    
+    SYMBOL sym;
+    sym = insertsym(id->stringval);
+    //setup kind
+    sym->kind = CONSTSYM;
+    //set up the basicdt (INTEGER REAL etc)
+    sym->basicdt = constant->datatype;
+    
+    //set up the size and actual value
+    if(sym->basicdt == 1) //real
+    {
+        sym->constval.realnum = constant->realval;
+        sym->size = 8;
+    }
+    if(sym->basicdt == 0) //int
+    {
+        sym->constval.intnum = constant->intval;
+        sym->size = 4;
+    }
+    
+    //sym->size = basicsizes[constant->datatype];
+    
+    printf("You finished calling instconstant \n");
+}
 
 TOKEN findtype(TOKEN tok)
 {
@@ -266,6 +302,21 @@ TOKEN binop(TOKEN op, TOKEN lhs, TOKEN rhs)        /* reduce binary operator */
       printf("You finished calling binop function \n");
     return op;
   }
+
+
+TOKEN onenop(TOKEN op, TOKEN lhs)        /* reduce binary operator */
+{
+  printf("You called oneop function \n");
+  op->operands = lhs;          /* link operands to operator       */
+  lhs->link = NULL;             /* link second operand to first    */
+  if (DEBUG & DB_BINOP)
+  { printf("onenop: \n");
+      dbugprinttok(op);
+      dbugprinttok(lhs);
+  };
+  printf("You finished calling oneop function \n");
+  return op;
+}
 
 TOKEN makeif(TOKEN tok, TOKEN exp, TOKEN thenpart, TOKEN elsepart)
   {  tok->tokentype = OPERATOR;  /* Make it look like an operator   */

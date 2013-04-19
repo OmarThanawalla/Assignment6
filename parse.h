@@ -4,6 +4,13 @@
 /* You may use the function headers below if you wish, or you may
    replace them if you wish.  */
 
+//added some new functions:
+/*onenop does what binop does but with only two args */
+TOKEN onenop(TOKEN op, TOKEN lhs);
+/* instcontstant adds constants into the symbol table */
+void instconstant(TOKEN id, TOKEN constant);
+
+
 /* cons links a new item onto the front of a list. */
 TOKEN cons(TOKEN item, TOKEN list);
 /* nconc concatenates two lists, destructively, by making the last link
