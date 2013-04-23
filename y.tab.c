@@ -1632,7 +1632,7 @@ yyreduce:
 
   case 12:
 #line 107 "parse.y"
-    { printf("exectued varspecs action vargroup SEMICOLON option \n");}
+    { printf("exectued varspecs action vargroup SEMICOLON option \n"); }
     break;
 
   case 13:
@@ -1652,7 +1652,7 @@ yyreduce:
 
   case 16:
 #line 115 "parse.y"
-    { printf("executed type action \n");}
+    { printf("executed type action \n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 17:
@@ -1662,7 +1662,7 @@ yyreduce:
 
   case 18:
 #line 120 "parse.y"
-    { printf("BLOCK action was called"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
+    { printf("BLOCK action was called \n"); (yyval) = makeprogn((yyvsp[(1) - (3)]),cons((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]))); }
     break;
 
   case 19:
@@ -1672,7 +1672,7 @@ yyreduce:
 
   case 20:
 #line 124 "parse.y"
-    {printf("STATEMENTLIST multiple statements \n");}
+    {printf("STATEMENTLIST single statements \n");  (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 21:
@@ -1697,7 +1697,7 @@ yyreduce:
 
   case 25:
 #line 131 "parse.y"
-    { printf("you called STATEMENT action completing assignment \n");}
+    { printf("you called STATEMENT action completing assignment \n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 26:
@@ -1708,7 +1708,7 @@ yyreduce:
 
   case 27:
 #line 134 "parse.y"
-    {printf("you called STATEMENT action completing REPEAT call \n");}
+    {printf("you called STATEMENT action completing REPEAT call \n");(yyval) = makerepeat( (yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]),  (yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]));}
     break;
 
   case 28:
@@ -1753,7 +1753,7 @@ yyreduce:
 
   case 36:
 #line 148 "parse.y"
-    { printf("you called EXPR action term option\n");}
+    { printf("you called EXPR action term option\n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 37:
@@ -1763,7 +1763,7 @@ yyreduce:
 
   case 38:
 #line 151 "parse.y"
-    {printf("you called smplexpr - term \n");}
+    {printf("you called smplexpr - term \n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 39:
@@ -1773,7 +1773,7 @@ yyreduce:
 
   case 40:
 #line 154 "parse.y"
-    { printf("you called TERM action factor option \n");}
+    { printf("you called TERM action factor option \n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 41:
@@ -1788,17 +1788,17 @@ yyreduce:
 
   case 43:
 #line 158 "parse.y"
-    { printf("You called factor action identifier option \n");}
+    { printf("You called factor action identifier option \n"); (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 44:
 #line 159 "parse.y"
-    { printf("You called factor action number option \n");}
+    { printf("You called factor action number option \n"); (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 45:
 #line 160 "parse.y"
-    { printf("You called factor action string option \n");}
+    { printf("You called factor action string option \n"); (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
 
@@ -2045,12 +2045,20 @@ yyreturn:
 TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   { 
   printf("you called cons method \n");
+  //pretty print item and pretty print list
+      printf("Here is ppexpr of item: \n");
+  ppexpr(item);
+      printf("Here is ppexpr of list: \n");
+  ppexpr(list);
+      
   item->link = list;
-    if (DEBUG & DB_CONS)
-       { printf("cons\n");
-         dbugprinttok(item);
-         dbugprinttok(list);
-       };
+//    if (DEBUG & DB_CONS)
+//       { printf("cons\n");
+//         dbugprinttok(item);
+//         dbugprinttok(list);
+//       };
+      printf("Here is ppexpr of item after linking: \n");
+ ppexpr(item);
   printf("you finished calling the cons method \n");
     return item;
   }
@@ -2148,7 +2156,6 @@ TOKEN findtype(TOKEN tok)
 	 printf("You FINISHED calling the findtype method in parse.y \n");
      return tok;
 }
-
 
 
 TOKEN binop(TOKEN op, TOKEN lhs, TOKEN rhs)        /* reduce binary operator */
@@ -2335,6 +2342,8 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
     tokm->intval = lbl;
     printf("operanded goto and labelnumber \n");
     
+    tokq->operands = tokm;
+    
     if (DEBUG)
     { printf("makefor\n");
         dbugprinttok(tok);
@@ -2344,12 +2353,81 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
         dbugprinttok(tokc);
         dbugprinttok(statement);
     };
-    printf("the following shows what tok looks like in makfor function using pretty print function \n");
+    printf("the following shows what tok looks like in makefor function using pretty print function \n");
     
     ppexpr(tok); 
     printf("\n ppexpr just ran \n");
     printf("You finished calling the makefor function \n");
     return tok;
+}
+
+TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
+{
+    printf("You called the MAKEREPEAT FUNCTION \n");
+    //set up progn
+    TOKEN toka = talloc();
+    toka->tokentype = OPERATOR;
+    toka->whichval = PROGNOP;
+    
+    //setup tokb to be label
+    TOKEN tokb = talloc();
+    tokb->tokentype = OPERATOR;
+    tokb->whichval = LABELOP;
+    
+    //create integer token
+    TOKEN tokc = talloc();
+    tokc->tokentype = NUMBERTOK;
+    tokc->datatype = INTEGER;
+    int lbl = labelnumber++;
+    tokc->intval = lbl; // 0 in the diagram
+    
+    //perform the operand of a b and c
+    toka->operands = tokb;
+    tokb->operands = tokc;
+    
+    toka->link= statementlist;
+    
+    
+    //create ifop
+    TOKEN tokd = talloc();
+    tokd->tokentype = OPERATOR;
+    tokd->whichval = IFOP;
+    
+    //statementlist to if
+    statementlist->link = tokd;
+    
+    //if to expr
+    tokd->operands = expr;
+    
+    //create another progn
+    //set up progn
+    TOKEN toke = talloc();
+    toke->tokentype = OPERATOR;
+    toke->whichval = PROGNOP;
+    
+    //expr to progn
+    expr->link = toke;
+    
+    //create goto
+    TOKEN tokq = talloc();
+    tokq->tokentype = OPERATOR;
+    tokq->whichval = GOTOOP;
+    
+    //lionk progn with goto
+    toke->link = tokq;
+    
+    //create int
+    //create integer token
+    TOKEN tokr = talloc();
+    tokr->tokentype = NUMBERTOK;
+    tokr->datatype = INTEGER;
+    tokr->intval = lbl; // 0 in the diagram
+    
+    //link goto with label value
+    tokq->operands = tokr;
+    
+    
+    printf("You finished calling the makerepeat function \n");
 }
 
 TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)

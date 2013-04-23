@@ -104,7 +104,7 @@ TOKEN parseresult;
   		     |   block                          { printf("executed vblock action no varspecs \n"); $$ = $1; }
 			 ;           
   varspecs   : vargroup SEMICOLON varspecs		{ printf("executed varspecs action \n");}
-             | vargroup SEMICOLON               { printf("exectued varspecs action vargroup SEMICOLON option \n");}
+             | vargroup SEMICOLON               { printf("exectued varspecs action vargroup SEMICOLON option \n"); }
              ;
 congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congroup action with more congroups \n"); instconstant($1,$3); }
              | IDENTIFIER EQ NUMBER SEMICOLON          { printf("executed congroup action one constant assignment \n"); instconstant($1,$3);}
@@ -112,26 +112,26 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
 
   vargroup   : idlist COLON type				{  printf("executed vargroup action \n"); instvars($1, $3); }
 			 ;
-  type 		 : simpletype						 { printf("executed type action \n");}
+  type 		 : simpletype						 { printf("executed type action \n");  $$ = $1;}
 			 ;
   simpletype : IDENTIFIER 						{ printf("the simple type action ran \n" ); $$ = findtype($1); }
 			 ;			 
 
-  block      :  BEGINBEGIN statementlist endpart     { printf("BLOCK action was called"); $$ = makeprogn($1,cons($2, $3)); }
+  block      :  BEGINBEGIN statementlist endpart     { printf("BLOCK action was called \n"); $$ = makeprogn($1,cons($2, $3)); }
              ;
 
   statementlist: statement SEMICOLON statementlist {printf("STATEMENTLIST multiple statements \n"); $$ = cons($1,$3);}
-             |   statement                         {printf("STATEMENTLIST multiple statements \n");}
+             |   statement                         {printf("STATEMENTLIST single statements \n");  $$ = $1; }
              ;
 
   statement  :  BEGINBEGIN statementlist endpart   { printf("you called STATEMENT action completing BEGINBEGIN... \n"); $$ = makeprogn($1,cons($2, $3)); }
              |  IF expr THEN statementlist endif   { printf("you called STATEMENT action completing IF..THEN.. \n"); $$ = makeif($1, $2, $4, $5); }
              |  FOR assignment TO expr DO statementlist {printf("You called STATEMENT action for loop \n");$$ = makefor(1,$1,$2,$3,$4,$5,$6) ;}
              |  FOR assignment DOWNTO expr DO statementlist {printf("You called STATEMENT action for downto loop \n"); $$ = makefor(-1,$1,$2,$3,$4,$5,$6);}
-             |  assignment                     { printf("you called STATEMENT action completing assignment \n");}
+             |  assignment                     { printf("you called STATEMENT action completing assignment \n");  $$ = $1;}
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called STATEMENT action completing funcall \n"); $$ = makefuncall($2, $1, 
              $3);}
-             |  REPEAT statementlist UNTIL expr {printf("you called STATEMENT action completing REPEAT call \n");}
+             |  REPEAT statementlist UNTIL expr {printf("you called STATEMENT action completing REPEAT call \n");$$ = makerepeat( $1, $2,  $3, $4);}
              ;
 
   endpart    :  SEMICOLON statementlist endpart    {printf("You called ENDPART action \n"); $$ = cons($2, $3); }
@@ -145,19 +145,19 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
   expr       :  expr PLUS smplExpr                 { printf("you called EXPR action addition \n"); $$ = binop($2, $1, $3); }
              |  expr TIMES smplExpr                { printf("you called EXPR action multiplication \n"); $$ = binop($2, $1, $3); }
              |  expr EQ smplExpr                  {printf("you called EXPR action equality \n"); $$ = binop($2,$1,$3);}
-             |  smplExpr                           { printf("you called EXPR action term option\n");}
+             |  smplExpr                           { printf("you called EXPR action term option\n");  $$ = $1;}
              ;
   smplExpr   :  MINUS term                         {printf("you called smplExpr - MINUS term \n"); $$ = onenop($1,$2);}
-             |  term                               {printf("you called smplexpr - term \n");}
+             |  term                               {printf("you called smplexpr - term \n");  $$ = $1;}
              ;
   term       :  term TIMES factor              { printf("you called TERM action \n"); $$ = binop($2, $1, $3); }
-             |  factor                          { printf("you called TERM action factor option \n");}
+             |  factor                          { printf("you called TERM action factor option \n");  $$ = $1;}
              ;
   factor     :  LPAREN expr RPAREN             { $$ = $2; }
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called factor action completing funcall \n"); $$ = makefuncall($2, $1, $3);}
-             |  IDENTIFIER                      { printf("You called factor action identifier option \n");}
-             |  NUMBER                          { printf("You called factor action number option \n");}
-             |  STRING                          { printf("You called factor action string option \n");}
+             |  IDENTIFIER                      { printf("You called factor action identifier option \n"); $$ = $1;}
+             |  NUMBER                          { printf("You called factor action number option \n"); $$ = $1;}
+             |  STRING                          { printf("You called factor action string option \n"); $$ = $1;}
              ;
 
 %%
@@ -187,12 +187,20 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
 TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   { 
   printf("you called cons method \n");
+  //pretty print item and pretty print list
+      printf("Here is ppexpr of item: \n");
+  ppexpr(item);
+      printf("Here is ppexpr of list: \n");
+  ppexpr(list);
+      
   item->link = list;
-    if (DEBUG & DB_CONS)
-       { printf("cons\n");
-         dbugprinttok(item);
-         dbugprinttok(list);
-       };
+//    if (DEBUG & DB_CONS)
+//       { printf("cons\n");
+//         dbugprinttok(item);
+//         dbugprinttok(list);
+//       };
+      printf("Here is ppexpr of item after linking: \n");
+ ppexpr(item);
   printf("you finished calling the cons method \n");
     return item;
   }
@@ -290,7 +298,6 @@ TOKEN findtype(TOKEN tok)
 	 printf("You FINISHED calling the findtype method in parse.y \n");
      return tok;
 }
-
 
 
 TOKEN binop(TOKEN op, TOKEN lhs, TOKEN rhs)        /* reduce binary operator */
@@ -477,6 +484,8 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
     tokm->intval = lbl;
     printf("operanded goto and labelnumber \n");
     
+    tokq->operands = tokm;
+    
     if (DEBUG)
     { printf("makefor\n");
         dbugprinttok(tok);
@@ -486,12 +495,81 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
         dbugprinttok(tokc);
         dbugprinttok(statement);
     };
-    printf("the following shows what tok looks like in makfor function using pretty print function \n");
+    printf("the following shows what tok looks like in makefor function using pretty print function \n");
     
     ppexpr(tok); 
     printf("\n ppexpr just ran \n");
     printf("You finished calling the makefor function \n");
     return tok;
+}
+
+TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
+{
+    printf("You called the MAKEREPEAT FUNCTION \n");
+    //set up progn
+    TOKEN toka = talloc();
+    toka->tokentype = OPERATOR;
+    toka->whichval = PROGNOP;
+    
+    //setup tokb to be label
+    TOKEN tokb = talloc();
+    tokb->tokentype = OPERATOR;
+    tokb->whichval = LABELOP;
+    
+    //create integer token
+    TOKEN tokc = talloc();
+    tokc->tokentype = NUMBERTOK;
+    tokc->datatype = INTEGER;
+    int lbl = labelnumber++;
+    tokc->intval = lbl; // 0 in the diagram
+    
+    //perform the operand of a b and c
+    toka->operands = tokb;
+    tokb->operands = tokc;
+    
+    toka->link= statementlist;
+    
+    
+    //create ifop
+    TOKEN tokd = talloc();
+    tokd->tokentype = OPERATOR;
+    tokd->whichval = IFOP;
+    
+    //statementlist to if
+    statementlist->link = tokd;
+    
+    //if to expr
+    tokd->operands = expr;
+    
+    //create another progn
+    //set up progn
+    TOKEN toke = talloc();
+    toke->tokentype = OPERATOR;
+    toke->whichval = PROGNOP;
+    
+    //expr to progn
+    expr->link = toke;
+    
+    //create goto
+    TOKEN tokq = talloc();
+    tokq->tokentype = OPERATOR;
+    tokq->whichval = GOTOOP;
+    
+    //lionk progn with goto
+    toke->link = tokq;
+    
+    //create int
+    //create integer token
+    TOKEN tokr = talloc();
+    tokr->tokentype = NUMBERTOK;
+    tokr->datatype = INTEGER;
+    tokr->intval = lbl; // 0 in the diagram
+    
+    //link goto with label value
+    tokq->operands = tokr;
+    
+    
+    printf("You finished calling the makerepeat function \n");
 }
 
 TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)

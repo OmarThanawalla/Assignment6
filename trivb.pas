@@ -20,8 +20,6 @@
     (goto 0))))))         }
 
 program graph1(output);
-const d = 0.0625;
-      s = 32;
 var i,lim : integer;
 begin
     lim := 7;
