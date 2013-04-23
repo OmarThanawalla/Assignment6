@@ -2046,9 +2046,11 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   { 
   printf("you called cons method \n");
   //pretty print item and pretty print list
-      printf("Here is ppexpr of item: \n");
+      
+  printf("Here is ppexpr of item: \n");
   ppexpr(item);
-      printf("Here is ppexpr of list: \n");
+      
+  printf("Here is ppexpr of list: \n");
   ppexpr(list);
       
   item->link = list;
@@ -2059,6 +2061,8 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
 //       };
       printf("Here is ppexpr of item after linking: \n");
  ppexpr(item);
+      
+      
   printf("you finished calling the cons method \n");
     return item;
   }
@@ -2453,13 +2457,17 @@ TOKEN makeprogn(TOKEN tok, TOKEN statements)
     tok->tokentype = OPERATOR;
      tok->whichval = PROGNOP;
      tok->operands = statements;
+      
+      printf("this is was ppexpr for statements looks like: \n");
      if (DEBUG & DB_MAKEPROGN)
        { printf("makeprogn\n");
          dbugprinttok(tok);
          dbugprinttok(statements);
        };
+      
+     printf("You FINISHED calling makeProgn \n");
+      ppexpr(tok);
      return tok;
-    printf("You FINISHED calling makeProgn \n");
    }
 
 int wordaddress(int n, int wordsize)
