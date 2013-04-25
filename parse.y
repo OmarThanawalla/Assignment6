@@ -117,35 +117,36 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
   simpletype : IDENTIFIER 						{ printf("the simple type action ran \n" ); $$ = findtype($1); }
 			 ;			 
 
-  block      :  BEGINBEGIN statementlist endpart     { printf("BLOCK action was called \n"); $$ = makeprogn($1,cons($2, $3)); }
+  block      :  BEGINBEGIN statement endpart     { printf("BLOCK action was called \n"); $$ = makeprogn($1,cons($2, $3)); }
              ;
 
   statementlist: statement SEMICOLON statementlist {printf("STATEMENTLIST multiple statements \n"); $$ = cons($1,$3);}
              |   statement                         {printf("STATEMENTLIST single statements \n");  $$ = $1; }
              ;
 
-  statement  :  BEGINBEGIN statementlist endpart   { printf("you called STATEMENT action completing BEGINBEGIN... \n"); $$ = makeprogn($1,cons($2, $3)); }
-             |  IF expr THEN statementlist endif   { printf("you called STATEMENT action completing IF..THEN.. \n"); $$ = makeif($1, $2, $4, $5); }
-             |  FOR assignment TO expr DO statementlist {printf("You called STATEMENT action for loop \n");$$ = makefor(1,$1,$2,$3,$4,$5,$6) ;}
-             |  FOR assignment DOWNTO expr DO statementlist {printf("You called STATEMENT action for downto loop \n"); $$ = makefor(-1,$1,$2,$3,$4,$5,$6);}
+  statement  :  BEGINBEGIN statement endpart   { printf("you called STATEMENT action completing BEGINBEGIN... \n"); $$ = makeprogn($1,cons($2, $3)); }
+             |  IF expr THEN statement endif   { printf("you called STATEMENT action completing IF..THEN.. \n"); $$ = makeif($1, $2, $4, $5); }
+             |  FOR assignment TO expr DO statement {printf("You called STATEMENT action for loop \n");$$ = makefor(1,$1,$2,$3,$4,$5,$6) ;}
+             |  FOR assignment DOWNTO expr DO statement {printf("You called STATEMENT action for downto loop \n"); $$ = makefor(-1,$1,$2,$3,$4,$5,$6);}
              |  assignment                     { printf("you called STATEMENT action completing assignment \n");  $$ = $1;}
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called STATEMENT action completing funcall \n"); $$ = makefuncall($2, $1, 
              $3);}
              |  REPEAT statementlist UNTIL expr {printf("you called STATEMENT action completing REPEAT call \n");$$ = makerepeat( $1, $2,  $3, $4);}
              ;
 
-  endpart    :  SEMICOLON statementlist endpart    {printf("You called ENDPART action \n"); $$ = cons($2, $3); }
-             |  END                            { printf("You called ENDPART action \n");$$ = NULL; }
+  endpart    :  SEMICOLON statement endpart    {printf("You called ENDPART action more statements \n"); $$ = cons($2, $3); }
+             |  END                            { printf("You called ENDPART action end \n");$$ = NULL; }
              ;
-  endif      :  ELSE statementlist                 { printf("You called ENDIF action \n"); $$ = $2; }
+  endif      :  ELSE statement                 { printf("You called ENDIF action \n"); $$ = $2; }
              |  /* empty */                    { printf("You called ENDIF action \n"); $$ = NULL; }
              ;
   assignment :  IDENTIFIER ASSIGN expr         { printf("you called ASSIGNMENT action \n"); $$ = binop($2, $1, $3); }
              ;
   expr       :  expr PLUS smplExpr                 { printf("you called EXPR action addition \n"); $$ = binop($2, $1, $3); }
+             |  expr MINUS smplExpr                { printf("you called EXPR action minus \n"); $$ = binop($2, $1, $3); }
              |  expr TIMES smplExpr                { printf("you called EXPR action multiplication \n"); $$ = binop($2, $1, $3); }
              |  expr EQ smplExpr                  {printf("you called EXPR action equality \n"); $$ = binop($2,$1,$3);}
-             |  smplExpr                           { printf("you called EXPR action term option\n");  $$ = $1;}
+             |  smplExpr                           { printf("you called EXPR action smplExpr option\n");  $$ = $1;}
              ;
   smplExpr   :  MINUS term                         {printf("you called smplExpr - MINUS term \n"); $$ = onenop($1,$2);}
              |  term                               {printf("you called smplexpr - term \n");  $$ = $1;}
@@ -191,7 +192,8 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
       
   printf("Here is ppexpr of item: \n");
   ppexpr(item);
-      
+  if(list == NULL)
+      printf("list is NULL \n");
   printf("Here is ppexpr of list: \n");
   ppexpr(list);
       
@@ -362,6 +364,8 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
     //what am i suppose to in this function
     //create progn operator token
     
+    printf("This is what statement looks like: \n");
+    ppexpr(statement);
     //Set up progn
     tok->tokentype = OPERATOR;
     tok->whichval = PROGNOP;
@@ -510,6 +514,11 @@ TOKEN makefor(int sign, TOKEN tok, TOKEN asg, TOKEN tokb, TOKEN endexpr, TOKEN t
 TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
 {
     printf("You called the MAKEREPEAT FUNCTION \n");
+    printf("This is what statementlist looks like in makerepeat function: \n");
+    ppexpr(statementlist);
+    
+    printf("And this is what expr looks like: \n");
+    ppexpr(expr);
     //set up progn
     TOKEN toka = talloc();
     toka->tokentype = OPERATOR;
@@ -572,13 +581,16 @@ TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
     //link goto with label value
     tokq->operands = tokr;
     
-    
+    //return something
+    return toka;
     printf("You finished calling the makerepeat function \n");
 }
 
 TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)
 {//tok will be recyclable
     printf("You called the makefuncall action \n");
+    printf("This is what args looks like: \n");
+    ppexpr(args);
     tok->tokentype = OPERATOR;
     tok->whichval = FUNCALLOP;
     
