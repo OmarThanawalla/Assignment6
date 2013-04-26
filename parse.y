@@ -131,7 +131,7 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
              |  assignment                     { printf("you called STATEMENT action completing assignment \n");  $$ = $1;}
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called STATEMENT action completing funcall \n"); $$ = makefuncall($2, $1, 
              $3);}
-             |  REPEAT statementlist UNTIL expr {printf("you called STATEMENT action completing REPEAT call \n");$$ = makerepeat( $1, $2,  $3, $4);}
+             |  REPEAT statementlist UNTIL expr {printf("you called STATEMENT action completing REPEAT call \n");$$ = makerepeat( $1, makeprogn(talloc(), $2),  $3, $4);}
              ;
 
   endpart    :  SEMICOLON statement endpart    {printf("You called ENDPART action more statements \n"); $$ = cons($2, $3); }
@@ -156,7 +156,7 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
              ;
   factor     :  LPAREN expr RPAREN             { $$ = $2; }
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called factor action completing funcall \n"); $$ = makefuncall($2, $1, $3);}
-             |  IDENTIFIER                      { printf("You called factor action identifier option \n"); $$ = $1;}
+             |  IDENTIFIER                      { printf("You called factor action identifier option \n"); $$ = findid($1);/*check if identifier is constant then smash*/}
              |  NUMBER                          { printf("You called factor action number option \n"); $$ = $1;}
              |  STRING                          { printf("You called factor action string option \n"); $$ = $1;}
              ;
@@ -269,6 +269,38 @@ void instconstant(TOKEN id, TOKEN constant)
     printf("You finished calling instconstant \n");
 }
 
+
+TOKEN findid(TOKEN tok)
+{
+    SYMBOL sym = searchst(tok->stringval);
+    
+    //cant i just return a NUMBERTOK and set up the tokenval with information from sym.constval?
+    //or do i need to preserve the original tok, modify some symtype symentry, and send it back?
+                                                    //^^and why would i want to do this?
+                                                    //^^isnt this already done in findtype or
+    //if sym is a constant
+        //create token
+        TOKEN tokb = talloc();
+        //set up datatype
+        tokb->tokentype = 5;
+        
+        //set up actual value
+        if(sym->basicdt == 0) //int
+        {
+            tokb->datatype = INTEGER;
+            tokb->intval = sym->constval.intnum;
+        }
+        if(sym->basicdt == 1) //real
+        {
+            tokb->datatype = REAL;
+            tokb->intval = sym->constval.realnum;
+        }
+    
+    return tokb;
+}
+
+/* findtype looks up a type name in the symbol table, puts the pointers
+ into tok, returns tok. */
 TOKEN findtype(TOKEN tok)
 {
     printf("You are CALLING the findtype method \n");
@@ -540,8 +572,10 @@ TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
     toka->operands = tokb;
     tokb->operands = tokc;
     
-    toka->link= statementlist;
+    tokb->link= statementlist; //statement SEMICOLON statementlist  {$$ = cons($1,$3);}
     
+    printf("this is what toka looks like after making the correction: \n");
+    ppexpr(toka);
     
     //create ifop
     TOKEN tokd = talloc();
@@ -580,10 +614,13 @@ TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
     
     //link goto with label value
     tokq->operands = tokr;
+    printf("This is now what toka looks like: \n");
     
+    ppexpr(toka);
+    
+    printf("You finished calling the makerepeat function \n");
     //return something
     return toka;
-    printf("You finished calling the makerepeat function \n");
 }
 
 TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)

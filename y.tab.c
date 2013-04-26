@@ -1710,7 +1710,7 @@ yyreduce:
 
   case 27:
 #line 134 "parse.y"
-    {printf("you called STATEMENT action completing REPEAT call \n");(yyval) = makerepeat( (yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]),  (yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]));}
+    {printf("you called STATEMENT action completing REPEAT call \n");(yyval) = makerepeat( (yyvsp[(1) - (4)]), makeprogn(talloc(), (yyvsp[(2) - (4)])),  (yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]));}
     break;
 
   case 28:
@@ -1795,7 +1795,7 @@ yyreduce:
 
   case 44:
 #line 159 "parse.y"
-    { printf("You called factor action identifier option \n"); (yyval) = (yyvsp[(1) - (1)]);}
+    { printf("You called factor action identifier option \n"); (yyval) = findid((yyvsp[(1) - (1)]));/*check if identifier is constant then smash*/}
     break;
 
   case 45:
@@ -2133,6 +2133,37 @@ void instconstant(TOKEN id, TOKEN constant)
     printf("You finished calling instconstant \n");
 }
 
+
+TOKEN findid(TOKEN tok)
+{
+    SYMBOL sym = searchst(tok->stringval);
+    
+    //cant i just return a NUMBERTOK and set up the tokenval with information from sym.constval?
+    //or do i need to preserve the original tok, modify some symtype symentry, and send it back?
+                                                    //^^and why would i want to do this?
+                                                    //^^isnt this already done in findtype or
+    //create token
+    TOKEN tokb = talloc();
+    //set up datatype
+    tokb->tokentype = 5;
+    
+    //set up actual value
+    if(sym->basicdt == 0) //int
+    {
+        tokb->datatype = INTEGER;
+        tokb->intval = sym->constval.intnum;
+    }
+    if(sym->basicdt == 1) //real
+    {
+        tokb->datatype = REAL;
+        tokb->intval = sym->constval.realnum;
+    }
+    
+    return tokb;
+}
+
+/* findtype looks up a type name in the symbol table, puts the pointers
+ into tok, returns tok. */
 TOKEN findtype(TOKEN tok)
 {
     printf("You are CALLING the findtype method \n");
@@ -2404,8 +2435,10 @@ TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
     toka->operands = tokb;
     tokb->operands = tokc;
     
-    toka->link= statementlist;
+    tokb->link= statementlist; //statement SEMICOLON statementlist  {$$ = cons($1,$3);}
     
+    printf("this is what toka looks like after making the correction: \n");
+    ppexpr(toka);
     
     //create ifop
     TOKEN tokd = talloc();
@@ -2444,10 +2477,13 @@ TOKEN makerepeat(TOKEN tok, TOKEN statementlist, TOKEN tokx, TOKEN expr)
     
     //link goto with label value
     tokq->operands = tokr;
+    printf("This is now what toka looks like: \n");
     
+    ppexpr(toka);
+    
+    printf("You finished calling the makerepeat function \n");
     //return something
     return toka;
-    printf("You finished calling the makerepeat function \n");
 }
 
 TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)
