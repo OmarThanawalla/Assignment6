@@ -2136,30 +2136,41 @@ void instconstant(TOKEN id, TOKEN constant)
 
 TOKEN findid(TOKEN tok)
 {
-    SYMBOL sym = searchst(tok->stringval);
     
-    //cant i just return a NUMBERTOK and set up the tokenval with information from sym.constval?
-    //or do i need to preserve the original tok, modify some symtype symentry, and send it back?
-                                                    //^^and why would i want to do this?
-                                                    //^^isnt this already done in findtype or
-    //create token
-    TOKEN tokb = talloc();
-    //set up datatype
-    tokb->tokentype = 5;
+    SYMBOL sym, typ;
+    sym = searchst(tok->stringval);
     
-    //set up actual value
-    if(sym->basicdt == 0) //int
+    //if symbol is constant
+    if(sym->kind == CONSTSYM)
     {
-        tokb->datatype = INTEGER;
-        tokb->intval = sym->constval.intnum;
-    }
-    if(sym->basicdt == 1) //real
-    {
-        tokb->datatype = REAL;
-        tokb->intval = sym->constval.realnum;
+        if(sym->basicdt == 0) //int
+        {
+            tok->tokentype = NUMBERTOK;
+            tok->datatype = INTEGER;
+            tok->intval = sym->constval.intnum;
+        }
+        if(sym->basicdt == 1) //real
+        {
+            tok->tokentype = NUMBERTOK;
+            tok->datatype = REAL;
+            tok->realval = sym->constval.realnum;
+        }
     }
     
-    return tokb;
+//    if(sym->kind == VARSYM)//the tok is a variable
+//    {
+//        //smash the token's tokentype
+//        tok->tokentype = sym->datatype;
+//    }
+    else{
+    tok->symentry = sym; //i dont know why this is happening
+    typ = sym->datatype; //typ is sym's datatype
+    tok->symtype = typ;  //so im changing the symtype of the token to the sym's datatype?
+    if ( typ->kind == BASICTYPE ||
+    typ->kind == POINTERSYM)
+    tok->datatype = typ->basicdt;
+    }
+    return tok;
 }
 
 /* findtype looks up a type name in the symbol table, puts the pointers
