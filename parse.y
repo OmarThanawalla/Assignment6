@@ -88,7 +88,7 @@ TOKEN parseresult;
 
 %%
 
-  program    : PROGRAM IDENTIFIER LPAREN IDENTIFIER RPAREN SEMICOLON cblock DOT { printf("exectued program action \n"); parseresult = $7;}
+  program    : PROGRAM IDENTIFIER LPAREN IDENTIFIER RPAREN SEMICOLON cblock DOT { printf("exectued program action \n"); parseresult = makeprogram($2, $4, $7);}
              ;
   idlist     : IDENTIFIER COMMA idlist			{ printf("executed idlist action1 \n"); $$ = cons($1, $3); }
 	 		 | IDENTIFIER 						{  printf("executed idlist action2 \n"); $$ = cons($1, NULL); }
@@ -184,6 +184,32 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
 
    /*  Note: you should add to the above values and insert debugging
        printouts in your routines similar to those that are shown here.     */
+TOKEN makeprogram(TOKEN graph1, TOKEN output, TOKEN statements)
+{
+    printf("You called makeprogram \n");
+    //build program token
+    TOKEN program1 = talloc();
+    program1->tokentype = OPERATOR;
+    program1->whichval = PROGRAMOP;
+    
+    //program token operands
+    program1->operands = graph1;
+    
+    //build progn2
+    TOKEN progn2 = talloc();
+    progn2->tokentype = OPERATOR;
+    progn2->whichval = PROGNOP;
+    
+    graph1->link = progn2;
+    
+    progn2->operands = output;
+    progn2->link = statements;
+    
+    
+    printf("You finished calling makeprogram \n");
+    return program1;
+}
+
 
 TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   { 

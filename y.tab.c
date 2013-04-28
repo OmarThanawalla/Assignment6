@@ -1586,7 +1586,7 @@ yyreduce:
     {
         case 2:
 #line 91 "parse.y"
-    { printf("exectued program action \n"); parseresult = (yyvsp[(7) - (8)]);}
+    { printf("exectued program action \n"); parseresult = makeprogram((yyvsp[(2) - (8)]), (yyvsp[(4) - (8)]), (yyvsp[(7) - (8)]));}
     break;
 
   case 3:
@@ -2050,6 +2050,32 @@ yyreturn:
 
    /*  Note: you should add to the above values and insert debugging
        printouts in your routines similar to those that are shown here.     */
+TOKEN makeprogram(TOKEN graph1, TOKEN output, TOKEN statements)
+{
+    printf("You called makeprogram \n");
+    //build program token
+    TOKEN program1 = talloc();
+    program1->tokentype = OPERATOR;
+    program1->whichval = PROGRAMOP;
+    
+    //program token operands
+    program1->operands = graph1;
+    
+    //build progn2
+    TOKEN progn2 = talloc();
+    progn2->tokentype = OPERATOR;
+    progn2->whichval = PROGNOP;
+    
+    graph1->link = progn2;
+    
+    progn2->operands = output;
+    progn2->link = statements;
+    
+    
+    printf("You finished calling makeprogram \n");
+    return program1;
+}
+
 
 TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   { 
