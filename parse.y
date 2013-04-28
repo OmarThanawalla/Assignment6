@@ -828,5 +828,5 @@ main()
     printf("yyparse result1 = %8d\n", res);
     if (DEBUG & DB_PARSERES) dbugprinttok(parseresult);
     ppexpr(parseresult);           /* Pretty-print the result tree */
-    printf("You are finished calling MAIN \n");
+    //printf("You are finished calling MAIN \n");
   }
