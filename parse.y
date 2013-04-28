@@ -140,7 +140,7 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
   endif      :  ELSE statement                 { printf("You called ENDIF action \n"); $$ = $2; }
              |  /* empty */                    { printf("You called ENDIF action \n"); $$ = NULL; }
              ;
-  assignment :  IDENTIFIER ASSIGN expr         { printf("you called ASSIGNMENT action \n"); $$ = binop($2, $1, $3); }
+  assignment :  factor ASSIGN expr         { printf("you called ASSIGNMENT action \n"); $$ = binop($2, $1, $3); }
              ;
   expr       :  expr PLUS smplExpr                 { printf("you called EXPR action addition \n"); $$ = binop($2, $1, $3); }
              |  expr MINUS smplExpr                { printf("you called EXPR action minus \n"); $$ = binop($2, $1, $3); }
@@ -152,7 +152,7 @@ congroup     : IDENTIFIER EQ NUMBER SEMICOLON congroup { printf("executed congro
              |  term                               {printf("you called smplexpr - term \n");  $$ = $1;}
              ;
   term       :  term TIMES factor              { printf("you called TERM action \n"); $$ = binop($2, $1, $3); }
-             |  factor                          { printf("you called TERM action factor option \n");  $$ = $1;}
+             |  factor                          { printf("you called TERM action factor optin \n");  $$ = $1;}
              ;
   factor     :  LPAREN expr RPAREN             { $$ = $2; }
              |  IDENTIFIER LPAREN arglist RPAREN {printf("you called factor action completing funcall \n"); $$ = makefuncall($2, $1, $3);}
@@ -213,7 +213,8 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   
   								/* install variables in symbol table */
 void instvars(TOKEN idlist, TOKEN typetok)
-{ 
+{
+        
         printf("You called instvars \n");
     
 		SYMBOL sym, typesym; int align;
@@ -227,7 +228,10 @@ void instvars(TOKEN idlist, TOKEN typetok)
         printf("You called instvars4 \n");
     
 		while ( idlist != NULL ) /* for each id */
-		{ 
+		{
+//            printf("kobe \n");
+//            printf("%s \n", idlist->stringval);
+//            printf("%i \n",typetok->datatype);
 			sym = insertsym(idlist->stringval);
 			sym->kind = VARSYM;
 			sym->offset = wordaddress(blockoffs[blocknumber],align);
@@ -272,6 +276,11 @@ void instconstant(TOKEN id, TOKEN constant)
 
 TOKEN findid(TOKEN tok)
 {
+    printf("You called findid \n");
+    printf("roobs of tok: \n");
+    printf("%s \n",tok->stringval);
+    printf("%i \n",tok->datatype);
+
     
     SYMBOL sym, typ;
     sym = searchst(tok->stringval);
@@ -302,10 +311,17 @@ TOKEN findid(TOKEN tok)
     tok->symentry = sym; //i dont know why this is happening
     typ = sym->datatype; //typ is sym's datatype
     tok->symtype = typ;  //so im changing the symtype of the token to the sym's datatype?
-    if ( typ->kind == BASICTYPE ||
-    typ->kind == POINTERSYM)
-    tok->datatype = typ->basicdt;
+    if ( typ->kind == BASICTYPE || typ->kind == POINTERSYM)
+        {
+            printf("speak \n");
+            ppexpr(tok);
+            tok->datatype = typ->basicdt;
+        }
     }
+    printf("You are checking shit findid \n");
+    printf("toobs of tok: \n");
+    printf("%s \n",tok->stringval);
+    printf("%i \n",tok->datatype);
     return tok;
 }
 
@@ -350,17 +366,115 @@ TOKEN findtype(TOKEN tok)
 
 TOKEN binop(TOKEN op, TOKEN lhs, TOKEN rhs)        /* reduce binary operator */
   {
+    
     printf("You called binop function \n");
-    op->operands = lhs;          /* link operands to operator       */
-    lhs->link = rhs;             /* link second operand to first    */
-    rhs->link = NULL;            /* terminate operand list          */
+            
+      
+      printf("this is what rhs looks like in binop before doing anything to it \n");
+      ppexpr(rhs);
+    if( (lhs->datatype == 1) && (op->whichval == 3) && (rhs->datatype == 0))//if lhs is a real and rhs is int and your multiplying
+    {
+          //rhs->datatype = 1;
+          //set rhs realval
+          //rhs->realval = rhs->intval;
+          //create floatOP and operand it to the rhs
+          TOKEN toka = talloc();
+          toka->tokentype = OPERATOR;
+          toka->whichval = FLOATOP;
+          toka->operands = rhs;
+          //lhs link to floatOP
+          lhs->link = toka;
+          toka->link = NULL;
+          rhs->link = NULL;
+          op->datatype = 1;
+        
+//          printf("this is what lhs looks like in binop  \n");
+//          ppexpr(lhs);
+//          printf("this is what toka looks like in binop  \n");
+//          ppexpr(toka);
+//          printf("this is what rhs looks like in binop  \n");
+//          ppexpr(rhs);
+          op->operands = lhs;
+    }
+    else if( (lhs->datatype == 0) && (op->whichval == 3) && (rhs->datatype == 1) ) //lhs is a int, rhs is a real, and your multiplying
+      {
+          printf("lhs is a int, rhs is a real, and your multiplying \n");
+          op->datatype = 1;
+          lhs->datatype = 1;
+          lhs->realval = lhs->intval;
+          
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = rhs;             /* link second operand to first    */
+          rhs->link = NULL;            /* terminate operand list          */
+          
+          
+          printf("this is what lhs looks like in binop  \n");
+          ppexpr(lhs);
+          printf("this is what op looks like in binop  \n");
+          ppexpr(op);
+          printf("this is what rhs looks like in binop  \n");
+          ppexpr(rhs);
+
+      }
+    else if((op->whichval == 1) && (lhs->whichval = FUNCALLOP)) //if you are adding a funcall. if funcall return type is a real, makes rhs a real
+      {
+          printf("this is what lhs looks like in binop  \n");
+          ppexpr(lhs);
+          printf("this is what op looks like in binop  \n");
+          ppexpr(op);
+          printf("this is what rhs looks like in binop  \n");
+          ppexpr(rhs);
+          //look up lhs return type
+          TOKEN funcName= lhs->operands;
+          SYMBOL sym = searchst(funcName->stringval);
+          SYMBOL typ = sym->datatype;
+          printf("the type basic dt is: %i \n",typ->basicdt);
+          
+          if(typ->basicdt == 1) //if lhs return type is real
+          {
+              //convert rhs into real (assumes rhs is a numbertok of int)
+              rhs->datatype = 1;
+              rhs->realval = rhs->intval;
+              //set operator to real
+              op->datatype = 1;
+          }
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = rhs;             /* link second operand to first    */
+          rhs->link = NULL;            /* terminate operand list          */
+          
+      }
+    else if((op->whichval == 5) && (lhs->datatype == 0) && (rhs->datatype == 1)) //assignment, lhs is a int
+      {
+          printf("diamond \n");
+          ppexpr(lhs);
+          //create a fix op
+          TOKEN toka = talloc();
+          toka->tokentype = OPERATOR;
+          toka->whichval = FIXOP;
+          
+          //connect fixop (toka) to rhs
+          toka->operands = rhs;
+          //connect lhs to fixop
+          lhs->link = toka;
+          
+          //connectop assign to lhs
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = toka;             /* link second operand to first    */
+          toka->link = NULL;
+      }
+    else 
+    {
+        op->operands = lhs;          /* link operands to operator       */
+        lhs->link = rhs;             /* link second operand to first    */
+        rhs->link = NULL;            /* terminate operand list          */
+    }
     if (DEBUG & DB_BINOP)
        { printf("binop\n");
          dbugprinttok(op);
          dbugprinttok(lhs);
          dbugprinttok(rhs);
        };
-      printf("You finished calling binop function \n");
+    printf("You finished calling binop function \n");
     return op;
   }
 
@@ -644,9 +758,7 @@ TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)
     //link fn to args
     fn->link = args;
     //link tok to fn
-    tok->operands
-    
-      = fn;
+    tok->operands = fn;
 
     printf("You finished calling the makefuncall action \n");
     return tok;

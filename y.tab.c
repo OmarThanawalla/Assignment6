@@ -511,7 +511,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   111
+#define YYLAST   122
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  62
@@ -592,7 +592,7 @@ static const yytype_int8 yyrhs[] =
       77,    -1,    42,    78,    56,    79,    37,    75,    -1,    42,
       78,    38,    79,    37,    75,    -1,    78,    -1,     3,    28,
       65,    29,    -1,    53,    74,    58,    79,    -1,    26,    75,
-      76,    -1,    40,    -1,    39,    75,    -1,    -1,     3,    10,
+      76,    -1,    40,    -1,    39,    75,    -1,    -1,    82,    10,
       79,    -1,    79,     6,    80,    -1,    79,     7,    80,    -1,
       79,     8,    80,    -1,    79,    11,    80,    -1,    80,    -1,
        7,    81,    -1,    81,    -1,    81,     8,    82,    -1,    82,
@@ -671,87 +671,89 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     1,     0,     0,     0,     0,     0,
-       0,     0,     0,     8,    10,     0,     0,     0,     0,     0,
-       0,    25,     0,     0,     4,     0,     0,     0,     2,     0,
-       0,     0,     0,     0,    44,    46,    45,     0,     0,     0,
-      37,    39,    41,     0,    20,     0,    29,    18,     0,     7,
-       0,     0,     9,    12,    32,     0,     6,    21,     0,     0,
-       0,    38,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     3,    17,    15,    16,    11,    26,     0,
-       0,     0,     0,    42,    33,    34,    35,    36,    31,    40,
-      27,    19,    28,    14,     5,     0,     0,    43,     0,    22,
+       0,     0,     0,     8,    10,    44,    46,    45,     0,     0,
+       0,     0,     0,     0,    25,     0,     0,     0,     4,     0,
+       0,     0,     2,     0,    44,     0,     0,    37,    39,    41,
+       0,     0,     0,     0,    20,     0,    29,    18,     0,     0,
+       7,     0,     0,     9,    12,     0,     6,     0,    38,     0,
+       0,     0,     0,    42,     0,    21,     0,     0,     0,     0,
+       0,     0,    32,     0,     3,    17,    15,    16,    11,    26,
+       0,     0,    33,    34,    35,    36,    40,     0,     0,    31,
+      27,    19,    28,    14,     5,    43,     0,     0,     0,    22,
       13,    24,    23,    30
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,    25,    55,    12,    13,    26,    23,    27,    75,
-      76,    14,    43,    44,    47,    99,    21,    56,    40,    41,
-      42
+      -1,     2,    29,    55,    12,    13,    30,    27,    31,    76,
+      77,    14,    43,    44,    47,    99,    24,    56,    37,    38,
+      39
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -50
+#define YYPACT_NINF -57
 static const yytype_int8 yypact[] =
 {
-     -48,     3,    15,     0,   -50,    31,    34,    21,   -20,     1,
-      37,    66,    50,   -50,   -50,    10,     1,    72,    46,     1,
-      -3,   -50,    70,   -32,    58,    61,    51,    64,   -50,    46,
-      46,    -3,    81,     6,    67,   -50,   -50,    28,    46,     2,
-     -50,    84,   -50,    35,    68,     1,   -50,   -50,    91,   -50,
-      66,    94,   -50,    66,    65,    69,    59,   -50,    46,    46,
-      46,    84,    53,    46,    46,    46,    46,     1,    28,    46,
-       1,    -3,    73,   -50,   -50,   -50,   -50,   -50,   -50,    46,
-      11,    18,    71,   -50,   -50,   -50,   -50,   -50,    62,   -50,
-      65,   -50,   -50,    37,   -50,     1,     1,   -50,     1,   -50,
-     -50,   -50,   -50,   -50
+     -39,    22,    18,     0,   -57,    26,     1,    12,    -1,     3,
+      36,    44,    31,   -57,   -57,    29,   -57,   -57,    62,     3,
+      70,    62,     3,    28,   -57,    50,    51,   -15,    45,    49,
+      37,    54,   -57,    62,    53,    70,    71,   -57,    89,   -57,
+      28,   -29,     9,    46,    79,     3,   -57,   -57,    62,   102,
+     -57,    44,   105,   -57,    44,    80,    88,    62,    89,    62,
+      62,    62,    62,   -57,    70,   -57,    62,    62,     3,    62,
+       3,    28,    95,    84,   -57,   -57,   -57,   -57,   -57,   101,
+      62,    83,   -57,   -57,   -57,   -57,   -57,    15,    35,    75,
+      95,   -57,   -57,    36,   -57,   -57,     3,     3,     3,   -57,
+     -57,   -57,   -57,   -57
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -50,   -50,    52,   -49,   -50,    80,    54,    12,   -50,   -50,
-     -50,    78,    36,    -9,   -26,   -50,    92,   -17,    14,    74,
-      40
+     -57,   -57,    64,   -56,   -57,    90,    65,    23,   -57,   -57,
+     -57,    91,    48,    -5,   -37,   -57,   100,   -16,    24,    87,
+      -9
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
-static const yytype_uint8 yytable[] =
+#define YYTABLE_NINF -44
+static const yytype_int8 yytable[] =
 {
-      20,    39,     9,     1,    15,    57,     3,    31,    63,    64,
-      65,    82,    54,    66,     9,     4,    10,    63,    64,    65,
-      29,    62,    66,    45,    63,    64,    65,    11,     5,    66,
-      94,    34,    35,    36,     6,    16,    71,    46,    30,    11,
-      22,    80,    81,    17,    58,    92,    18,     8,    95,    34,
-      35,    36,    90,    37,    19,    96,    38,    67,    88,    63,
-      64,    65,    59,     7,    66,    63,    64,    65,    28,    24,
-      66,    63,    64,    65,    38,    32,    66,    84,    85,    86,
-      87,    48,    83,    50,    79,     9,   101,   102,    51,   103,
-      53,    29,    68,    69,    70,    60,    72,    74,    78,    93,
-      97,    98,    73,    49,    52,   100,    91,    77,    89,    33,
-       0,    61
+      25,    81,    36,    65,    23,    42,    15,    16,    17,    66,
+      25,    25,     1,    25,    40,    59,    60,    61,     4,     9,
+      62,    59,    60,    61,    94,     3,    62,    67,     5,     6,
+       7,    18,    72,     9,    92,    10,    25,    19,     8,    26,
+      71,    59,    60,    61,    11,    20,    62,    28,    21,    32,
+      87,    88,    96,    90,    45,    86,    22,    33,    11,    25,
+      48,    25,    49,    89,    68,    34,    16,    17,    46,    35,
+      51,     9,    97,    34,    16,    17,    52,    59,    60,    61,
+      54,    57,    62,    82,    83,    84,    85,    25,    25,    25,
+      18,   101,   102,   103,    59,    60,    61,    64,    18,    62,
+      63,    59,    60,    61,    69,    70,    62,    73,    75,    79,
+      93,   -43,    95,    80,    98,    74,   100,    50,    91,    78,
+      41,    53,    58
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       9,    18,    34,    51,     3,    31,     3,    16,     6,     7,
-       8,    60,    29,    11,    34,     0,    36,     6,     7,     8,
-      10,    38,    11,    26,     6,     7,     8,    59,    28,    11,
-      79,     3,     4,     5,     3,    34,    45,    40,    28,    59,
-       3,    58,    59,    42,    38,    71,    45,    26,    37,     3,
-       4,     5,    69,     7,    53,    37,    28,    55,    67,     6,
-       7,     8,    56,    29,    11,     6,     7,     8,    18,     3,
-      11,     6,     7,     8,    28,     3,    11,    63,    64,    65,
-      66,    11,    29,    25,    25,    34,    95,    96,    27,    98,
-      26,    10,     8,    58,    26,    28,     5,     3,    29,    26,
-      29,    39,    50,    23,    26,    93,    70,    53,    68,    17,
-      -1,    37
+       9,    57,    18,    40,     9,    21,     3,     4,     5,    38,
+      19,    20,    51,    22,    19,     6,     7,     8,     0,    34,
+      11,     6,     7,     8,    80,     3,    11,    56,    28,     3,
+      29,    28,    48,    34,    71,    36,    45,    34,    26,     3,
+      45,     6,     7,     8,    59,    42,    11,     3,    45,    18,
+      66,    67,    37,    69,    26,    64,    53,    28,    59,    68,
+      10,    70,    11,    68,    55,     3,     4,     5,    40,     7,
+      25,    34,    37,     3,     4,     5,    27,     6,     7,     8,
+      26,    28,    11,    59,    60,    61,    62,    96,    97,    98,
+      28,    96,    97,    98,     6,     7,     8,     8,    28,    11,
+      29,     6,     7,     8,    58,    26,    11,     5,     3,    29,
+      26,    10,    29,    25,    39,    51,    93,    27,    70,    54,
+      20,    30,    35
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -759,15 +761,15 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,    51,    63,     3,     0,    28,     3,    29,    26,    34,
-      36,    59,    66,    67,    73,     3,    34,    42,    45,    53,
-      75,    78,     3,    69,     3,    64,    68,    70,    18,    10,
-      28,    75,     3,    78,     3,     4,     5,     7,    28,    79,
-      80,    81,    82,    74,    75,    26,    40,    76,    11,    67,
-      25,    27,    73,    26,    79,    65,    79,    76,    38,    56,
-      28,    81,    79,     6,     7,     8,    11,    55,     8,    58,
-      26,    75,     5,    64,     3,    71,    72,    68,    29,    25,
-      79,    79,    65,    29,    80,    80,    80,    80,    75,    82,
-      79,    74,    76,    26,    65,    37,    37,    29,    39,    77,
+      36,    59,    66,    67,    73,     3,     4,     5,    28,    34,
+      42,    45,    53,    75,    78,    82,     3,    69,     3,    64,
+      68,    70,    18,    28,     3,     7,    79,    80,    81,    82,
+      75,    78,    79,    74,    75,    26,    40,    76,    10,    11,
+      67,    25,    27,    73,    26,    65,    79,    28,    81,     6,
+       7,     8,    11,    29,     8,    76,    38,    56,    55,    58,
+      26,    75,    79,     5,    64,     3,    71,    72,    68,    29,
+      25,    65,    80,    80,    80,    80,    82,    79,    79,    75,
+      79,    74,    76,    26,    65,    29,    37,    37,    39,    77,
       69,    75,    75,    75
 };
 
@@ -1780,7 +1782,7 @@ yyreduce:
 
   case 41:
 #line 155 "parse.y"
-    { printf("you called TERM action factor option \n");  (yyval) = (yyvsp[(1) - (1)]);}
+    { printf("you called TERM action factor optin \n");  (yyval) = (yyvsp[(1) - (1)]);}
     break;
 
   case 42:
@@ -1810,7 +1812,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1814 "y.tab.c"
+#line 1816 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2077,7 +2079,8 @@ TOKEN cons(TOKEN item, TOKEN list)           /* add item to front of list */
   
   								/* install variables in symbol table */
 void instvars(TOKEN idlist, TOKEN typetok)
-{ 
+{
+        
         printf("You called instvars \n");
     
 		SYMBOL sym, typesym; int align;
@@ -2091,7 +2094,10 @@ void instvars(TOKEN idlist, TOKEN typetok)
         printf("You called instvars4 \n");
     
 		while ( idlist != NULL ) /* for each id */
-		{ 
+		{
+//            printf("kobe \n");
+//            printf("%s \n", idlist->stringval);
+//            printf("%i \n",typetok->datatype);
 			sym = insertsym(idlist->stringval);
 			sym->kind = VARSYM;
 			sym->offset = wordaddress(blockoffs[blocknumber],align);
@@ -2136,6 +2142,11 @@ void instconstant(TOKEN id, TOKEN constant)
 
 TOKEN findid(TOKEN tok)
 {
+    printf("You called findid \n");
+    printf("roobs of tok: \n");
+    printf("%s \n",tok->stringval);
+    printf("%i \n",tok->datatype);
+
     
     SYMBOL sym, typ;
     sym = searchst(tok->stringval);
@@ -2166,10 +2177,17 @@ TOKEN findid(TOKEN tok)
     tok->symentry = sym; //i dont know why this is happening
     typ = sym->datatype; //typ is sym's datatype
     tok->symtype = typ;  //so im changing the symtype of the token to the sym's datatype?
-    if ( typ->kind == BASICTYPE ||
-    typ->kind == POINTERSYM)
-    tok->datatype = typ->basicdt;
+    if ( typ->kind == BASICTYPE || typ->kind == POINTERSYM)
+        {
+            printf("speak \n");
+            ppexpr(tok);
+            tok->datatype = typ->basicdt;
+        }
     }
+    printf("You are checking shit findid \n");
+    printf("toobs of tok: \n");
+    printf("%s \n",tok->stringval);
+    printf("%i \n",tok->datatype);
     return tok;
 }
 
@@ -2214,17 +2232,115 @@ TOKEN findtype(TOKEN tok)
 
 TOKEN binop(TOKEN op, TOKEN lhs, TOKEN rhs)        /* reduce binary operator */
   {
+    
     printf("You called binop function \n");
-    op->operands = lhs;          /* link operands to operator       */
-    lhs->link = rhs;             /* link second operand to first    */
-    rhs->link = NULL;            /* terminate operand list          */
+            
+      
+      printf("this is what rhs looks like in binop before doing anything to it \n");
+      ppexpr(rhs);
+    if( (lhs->datatype == 1) && (op->whichval == 3) && (rhs->datatype == 0))//if lhs is a real and rhs is int and your multiplying
+    {
+          //rhs->datatype = 1;
+          //set rhs realval
+          //rhs->realval = rhs->intval;
+          //create floatOP and operand it to the rhs
+          TOKEN toka = talloc();
+          toka->tokentype = OPERATOR;
+          toka->whichval = FLOATOP;
+          toka->operands = rhs;
+          //lhs link to floatOP
+          lhs->link = toka;
+          toka->link = NULL;
+          rhs->link = NULL;
+          op->datatype = 1;
+        
+//          printf("this is what lhs looks like in binop  \n");
+//          ppexpr(lhs);
+//          printf("this is what toka looks like in binop  \n");
+//          ppexpr(toka);
+//          printf("this is what rhs looks like in binop  \n");
+//          ppexpr(rhs);
+          op->operands = lhs;
+    }
+    else if( (lhs->datatype == 0) && (op->whichval == 3) && (rhs->datatype == 1) ) //lhs is a int, rhs is a real, and your multiplying
+      {
+          printf("lhs is a int, rhs is a real, and your multiplying \n");
+          op->datatype = 1;
+          lhs->datatype = 1;
+          lhs->realval = lhs->intval;
+          
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = rhs;             /* link second operand to first    */
+          rhs->link = NULL;            /* terminate operand list          */
+          
+          
+          printf("this is what lhs looks like in binop  \n");
+          ppexpr(lhs);
+          printf("this is what op looks like in binop  \n");
+          ppexpr(op);
+          printf("this is what rhs looks like in binop  \n");
+          ppexpr(rhs);
+
+      }
+    else if((op->whichval == 1) && (lhs->whichval = FUNCALLOP)) //if you are adding a funcall. if funcall return type is a real, makes rhs a real
+      {
+          printf("this is what lhs looks like in binop  \n");
+          ppexpr(lhs);
+          printf("this is what op looks like in binop  \n");
+          ppexpr(op);
+          printf("this is what rhs looks like in binop  \n");
+          ppexpr(rhs);
+          //look up lhs return type
+          TOKEN funcName= lhs->operands;
+          SYMBOL sym = searchst(funcName->stringval);
+          SYMBOL typ = sym->datatype;
+          printf("the type basic dt is: %i \n",typ->basicdt);
+          
+          if(typ->basicdt == 1) //if lhs return type is real
+          {
+              //convert rhs into real (assumes rhs is a numbertok of int)
+              rhs->datatype = 1;
+              rhs->realval = rhs->intval;
+              //set operator to real
+              op->datatype = 1;
+          }
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = rhs;             /* link second operand to first    */
+          rhs->link = NULL;            /* terminate operand list          */
+          
+      }
+    else if((op->whichval == 5) && (lhs->datatype == 0) && (rhs->datatype == 1)) //assignment, lhs is a int
+      {
+          printf("diamond \n");
+          ppexpr(lhs);
+          //create a fix op
+          TOKEN toka = talloc();
+          toka->tokentype = OPERATOR;
+          toka->whichval = FIXOP;
+          
+          //connect fixop (toka) to rhs
+          toka->operands = rhs;
+          //connect lhs to fixop
+          lhs->link = toka;
+          
+          //connectop assign to lhs
+          op->operands = lhs;          /* link operands to operator       */
+          lhs->link = toka;             /* link second operand to first    */
+          toka->link = NULL;
+      }
+    else 
+    {
+        op->operands = lhs;          /* link operands to operator       */
+        lhs->link = rhs;             /* link second operand to first    */
+        rhs->link = NULL;            /* terminate operand list          */
+    }
     if (DEBUG & DB_BINOP)
        { printf("binop\n");
          dbugprinttok(op);
          dbugprinttok(lhs);
          dbugprinttok(rhs);
        };
-      printf("You finished calling binop function \n");
+    printf("You finished calling binop function \n");
     return op;
   }
 
@@ -2508,9 +2624,7 @@ TOKEN makefuncall(TOKEN tok, TOKEN fn, TOKEN args)
     //link fn to args
     fn->link = args;
     //link tok to fn
-    tok->operands
-    
-      = fn;
+    tok->operands = fn;
 
     printf("You finished calling the makefuncall action \n");
     return tok;
