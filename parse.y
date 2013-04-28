@@ -829,4 +829,5 @@ main()
     if (DEBUG & DB_PARSERES) dbugprinttok(parseresult);
     ppexpr(parseresult);           /* Pretty-print the result tree */
     //printf("You are finished calling MAIN \n");
+    gencode(parseresult, blockoffs[blocknumber], labelnumber);
   }

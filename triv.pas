@@ -2,5 +2,5 @@
 program graph1(output);
 var i:integer;
 begin
-i := 3
+    i := 3
 end.
