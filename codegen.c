@@ -34,6 +34,8 @@ void genc(TOKEN code);
 
 int nextlabel;    /* Next available label number */
 int stkframesize;   /* total stack frame size */
+int registerArray[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 
 /* Top-level entry for code generator.
  pcode    = pointer to code:  (program foo (output) (progn ...))
@@ -59,18 +61,47 @@ void gencode(TOKEN pcode, int varsize, int maxlabel)
 /* Trivial version: always returns RBASE + 0 */
 /* Get a register.   */
 /* Need a type parameter or two versions for INTEGER or REAL */
-int getreg()
+int getreg(int typeofReg)
 {
     /*     ***** fix this *****   */
+    if(typeofReg == 0)
+    {
+        //pick up the first available int reg
+        int i;
+        for(i = 0; i < 8; i++)
+        {
+            if(registerArray[i]== 0)
+            {
+                registerArray[i] = 1;
+                return i;
+            }
+        }
+    }
+    else //real
+    {
+        int i;
+        for(i = 8; i < sizeof(registerArray); i++)
+        {
+            if(registerArray[i] == 0)
+            {
+                registerArray[i] = 1;
+                return i;
+            }
+        }
+    }
     return RBASE;
 }
 
 /* Trivial version */
 /* Generate code for arithmetic expression, return a register number */
 int genarith(TOKEN code)
-{   int num, reg;
+{
+    int num, reg;
+    int lhsr;
+    int rhsr;
+    SYMBOL sym;
     if (DEBUGGEN)
-    { printf("genaadfadsfsrith\n");
+    { 
         dbugprinttok(code);
     };
     switch ( code->tokentype )
@@ -80,7 +111,7 @@ int genarith(TOKEN code)
         {
             case INTEGER:
                 num = code->intval;
-                reg = getreg();
+                reg = getreg(0);
                 if ( num >= MINIMMEDIATE && num <= MAXIMMEDIATE )
                     asmimmed(MOVL, num, reg);
                 break;
@@ -92,9 +123,23 @@ int genarith(TOKEN code)
             break;
         case IDENTIFIERTOK:  //if the token is an identifier
             /*     ***** fix this *****   */
+            sym = searchst(code->stringval);
+            num = sym->offset;
+            //get a register (specifiy real or int, depending upon i
+            reg = getreg(code->datatype);
+            //move relative address into register
+            asmld(MOVL, -num, reg,code->stringval);
             break;
         case OPERATOR:
             /*     ***** fix this *****   */
+            switch(code->whichval )
+            {
+                case LEOP: // <=
+                    lhsr = genarith(code->operands);//i
+                    rhsr = genarith(code->operands->link);//32
+                     asmrr(CMPL,lhsr,rhsr);  //cmpl	%ecx,%eax           	#  compare %eax - %ecx
+                break;
+            }
             break;
     };
     return reg;
@@ -132,31 +177,30 @@ void genc(TOKEN code)
             lhs = code->operands;
             rhs = lhs->link;
             reg = genarith(rhs);              /* generate rhs into a register */
+            //printf("Reg is: %i \n",reg);
             sym = lhs->symentry;              /* assumes lhs is a simple var  */
             offs = sym->offset - stkframesize; /* net offset of the var   */
             switch (code->datatype)            /* store value into lhs  */
-        {
+            {
             case INTEGER:
+                //printf("You are in this case INTEGER \n");
+                //printf("This is what offs looks like: %i \n",offs);
                 asmst(MOVL, reg, offs, lhs->stringval);
                 break;
                 /* ...  */
-        };
+            };
             break;
         case LABELOP:
             //printf("you are in labelop \n");
             lhs = code->operands;
             //printf("The intval of label is: %i \n", lhs->intval);
             asmlabel(lhs->intval);
+            //||pause see pink sticky note
             break;
         case IFOP:
-            printf("you are in ifop \n");
             lhs = code->operands; //(<= i 32)
-            reg = genarith(rhs);              /* generate rhs into a register */
-            sym = lhs->symentry;              /* assumes lhs is a simple var  */
-            offs = sym->offset - stkframesize;
-            asmst(MOVL, reg, offs, lhs->stringval);
-            rhs = lhs->link;      //(progn (:= x (* 6.25...etc.
-            
+            genarith(lhs);
+
             break;
     };
 }

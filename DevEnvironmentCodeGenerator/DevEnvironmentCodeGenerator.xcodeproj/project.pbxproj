@@ -1,0 +1,225 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A758A9F017345A7200B872DB /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A758A9EF17345A7200B872DB /* main.c */; };
+		A758A9F217345A7200B872DB /* DevEnvironmentCodeGenerator.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = A758A9F117345A7200B872DB /* DevEnvironmentCodeGenerator.1 */; };
+		A758A9FB17345ACF00B872DB /* codegen.c in Sources */ = {isa = PBXBuildFile; fileRef = A758A9F817345ACF00B872DB /* codegen.c */; };
+		A758A9FC17345ACF00B872DB /* genasm.c in Sources */ = {isa = PBXBuildFile; fileRef = A758A9F917345ACF00B872DB /* genasm.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A758A9E917345A7200B872DB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				A758A9F217345A7200B872DB /* DevEnvironmentCodeGenerator.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A758A9EB17345A7200B872DB /* DevEnvironmentCodeGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevEnvironmentCodeGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
+		A758A9EF17345A7200B872DB /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		A758A9F117345A7200B872DB /* DevEnvironmentCodeGenerator.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = DevEnvironmentCodeGenerator.1; sourceTree = "<group>"; };
+		A758A9F817345ACF00B872DB /* codegen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = codegen.c; path = ../../codegen.c; sourceTree = "<group>"; };
+		A758A9F917345ACF00B872DB /* genasm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = genasm.c; path = ../../genasm.c; sourceTree = "<group>"; };
+		A758A9FA17345ACF00B872DB /* genasm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = genasm.h; path = ../../genasm.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A758A9E817345A7200B872DB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A758A9E017345A7200B872DB = {
+			isa = PBXGroup;
+			children = (
+				A758A9EE17345A7200B872DB /* DevEnvironmentCodeGenerator */,
+				A758A9EC17345A7200B872DB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A758A9EC17345A7200B872DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A758A9EB17345A7200B872DB /* DevEnvironmentCodeGenerator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A758A9EE17345A7200B872DB /* DevEnvironmentCodeGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				A758A9EF17345A7200B872DB /* main.c */,
+				A758A9F817345ACF00B872DB /* codegen.c */,
+				A758A9F917345ACF00B872DB /* genasm.c */,
+				A758A9FA17345ACF00B872DB /* genasm.h */,
+				A758A9F117345A7200B872DB /* DevEnvironmentCodeGenerator.1 */,
+			);
+			path = DevEnvironmentCodeGenerator;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A758A9EA17345A7200B872DB /* DevEnvironmentCodeGenerator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A758A9F517345A7200B872DB /* Build configuration list for PBXNativeTarget "DevEnvironmentCodeGenerator" */;
+			buildPhases = (
+				A758A9E717345A7200B872DB /* Sources */,
+				A758A9E817345A7200B872DB /* Frameworks */,
+				A758A9E917345A7200B872DB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DevEnvironmentCodeGenerator;
+			productName = DevEnvironmentCodeGenerator;
+			productReference = A758A9EB17345A7200B872DB /* DevEnvironmentCodeGenerator */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A758A9E217345A7200B872DB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Omar Thanawalla";
+			};
+			buildConfigurationList = A758A9E517345A7200B872DB /* Build configuration list for PBXProject "DevEnvironmentCodeGenerator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A758A9E017345A7200B872DB;
+			productRefGroup = A758A9EC17345A7200B872DB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A758A9EA17345A7200B872DB /* DevEnvironmentCodeGenerator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A758A9E717345A7200B872DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A758A9F017345A7200B872DB /* main.c in Sources */,
+				A758A9FB17345ACF00B872DB /* codegen.c in Sources */,
+				A758A9FC17345ACF00B872DB /* genasm.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A758A9F317345A7200B872DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A758A9F417345A7200B872DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A758A9F617345A7200B872DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A758A9F717345A7200B872DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A758A9E517345A7200B872DB /* Build configuration list for PBXProject "DevEnvironmentCodeGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A758A9F317345A7200B872DB /* Debug */,
+				A758A9F417345A7200B872DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A758A9F517345A7200B872DB /* Build configuration list for PBXNativeTarget "DevEnvironmentCodeGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A758A9F617345A7200B872DB /* Debug */,
+				A758A9F717345A7200B872DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A758A9E217345A7200B872DB /* Project object */;
+}
