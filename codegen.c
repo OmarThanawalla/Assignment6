@@ -153,6 +153,15 @@ int genarith(TOKEN code)
                      asmrr(CMPL,rhsr,lhsr);  //cmpl	%ecx,%eax           	#  compare %eax - %ecx
                     //free other registers?
                     
+                    //write jle
+                    asmjump(JLE,  nextlabel);
+                    //increment nextLabel
+                    nextlabel++;
+                    
+                    //run jmp command
+                    asmjump(JMP,  nextlabel);
+                    nextlabel++;
+                    
                 break;
             }
             break;
@@ -211,7 +220,6 @@ void genc(TOKEN code)
             };
             break;
         case LABELOP:
-            //printf("you are in labelop \n");
             lhs = code->operands;
             //printf("The intval of label is: %i \n", lhs->intval);
             asmlabel(lhs->intval);
