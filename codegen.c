@@ -160,6 +160,7 @@ int genarith(TOKEN code)
                     
                     //run jmp command
                     asmjump(JMP,  nextlabel);
+                    asmlabel(nextlabel-1); // this might be wrong
                     nextlabel++;
                     
                 break;
