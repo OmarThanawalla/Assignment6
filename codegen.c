@@ -48,6 +48,16 @@ int registerArray[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
  your .s file.
  */
 
+void clearAllRegisters()
+{
+    //iterate through the registers array
+    int i;
+    for(i = 0; i < 24; i++)
+    {
+        registerArray[i] = 0;
+    }
+}
+
 void gencode(TOKEN pcode, int varsize, int maxlabel)
 {  TOKEN name, code;
     name = pcode->operands;
@@ -114,6 +124,8 @@ int genarith(TOKEN code)
                 reg = getreg(0);
                 if ( num >= MINIMMEDIATE && num <= MAXIMMEDIATE )
                     asmimmed(MOVL, num, reg);
+                //free the other registers?
+                
                 break;
             case REAL:
                 
@@ -129,6 +141,7 @@ int genarith(TOKEN code)
             reg = getreg(code->datatype);
             //move relative address into register
             asmld(MOVL, -num, reg,code->stringval);
+            //free other registers?
             break;
         case OPERATOR:
             /*     ***** fix this *****   */
@@ -137,7 +150,9 @@ int genarith(TOKEN code)
                 case LEOP: // <=
                     lhsr = genarith(code->operands);//i
                     rhsr = genarith(code->operands->link);//32
-                     asmrr(CMPL,lhsr,rhsr);  //cmpl	%ecx,%eax           	#  compare %eax - %ecx
+                     asmrr(CMPL,rhsr,lhsr);  //cmpl	%ecx,%eax           	#  compare %eax - %ecx
+                    //free other registers?
+                    
                 break;
             }
             break;
@@ -163,6 +178,9 @@ void genc(TOKEN code)
         printf("Bad code token");
         dbugprinttok(code);
     };
+    //clear all registers
+    clearAllRegisters();
+    
     switch ( code->whichval )
     {
         case PROGNOP:
@@ -174,8 +192,8 @@ void genc(TOKEN code)
             };
             break;
         case ASSIGNOP:                   /* Trivial version: handles I := e */
-            lhs = code->operands;
-            rhs = lhs->link;
+            lhs = code->operands;       //i
+            rhs = lhs->link;            //32
             reg = genarith(rhs);              /* generate rhs into a register */
             //printf("Reg is: %i \n",reg);
             sym = lhs->symentry;              /* assumes lhs is a simple var  */
@@ -185,7 +203,9 @@ void genc(TOKEN code)
             case INTEGER:
                 //printf("You are in this case INTEGER \n");
                 //printf("This is what offs looks like: %i \n",offs);
-                asmst(MOVL, reg, offs, lhs->stringval);
+                asmst(MOVL, reg, offs, lhs->stringval); /* Generate a store instruction relative to RBP: */
+                //free the register
+                
                 break;
                 /* ...  */
             };
